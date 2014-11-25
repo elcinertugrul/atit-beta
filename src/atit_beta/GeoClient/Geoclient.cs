@@ -63,15 +63,15 @@ namespace GeoClient
     public class address
     {
         public string assemblyDistrict { get; set; }
-        //public string bbl { get; set;}
-        //public string bblBoroughCode { get; set; }
-        //public string bblTaxBlock { get; set; }
-        //public string bblTaxLot { get; set; }
+        public string bbl { get; set;}
+        public string bblBoroughCode { get; set; }
+        public string bblTaxBlock { get; set; }
+        public string bblTaxLot { get; set; }
         //"boeLgcPointer": "1",
         //"boePreferredStreetName": "WEST  100 STREET",
         //"boePreferredstreetCode": "13577001",
         //"boroughCode1In": "1",
-        //public string buildingIdentificationNumber { get; set;}
+        public string buildingIdentificationNumber { get; set;}
         //"censusBlock2000": "6000",
         //"censusBlock2010": "2000",
         //"censusTract1990": "187",
@@ -144,7 +144,7 @@ namespace GeoClient
         //"lowHouseNumberOfBlockfaceSortFormat": "000300000AA",
         //"lowHouseNumberOfDefiningAddressRange": "000314000AA",
         //"nta": "MN12",
-        //public string ntaName { get; set; }
+        public string ntaName { get; set; }
         //"numberOfCrossStreetB5SCsHighAddressEnd": "1",
         //"numberOfCrossStreetB5SCsLowAddressEnd": "1",
         //"numberOfCrossStreetsHighAddressEnd": "1",
@@ -158,7 +158,7 @@ namespace GeoClient
         //"returnCode1a": "00",
         //"returnCode1e": "00",
         //"roadwayType": "1",
-        //public string rpadBuildingClassificationCode { get; set; }
+        public string rpadBuildingClassificationCode { get; set; }
         //"rpadSelfCheckCodeForBbl": "5",
         //"sanbornBoroughCode": "1",
         //"sanbornPageNumber": "034",
@@ -195,13 +195,13 @@ namespace GeoClient
         //"yCoordinateHighAddressEnd": "0230221",
         //"yCoordinateLowAddressEnd": "0229944",
         //"yCoordinateOfCenterofCurvature": "0000000",
-        //public string zipCode { get; set;}
+        public string zipCode { get; set;}
 
     }
 
     public class Address_Result
     {
-        public address Adress { get; set; }
+        public address Address { get; set; }
     }
 
     public class Geoclient
@@ -240,11 +240,11 @@ namespace GeoClient
             string[] array = myaddress.ToArray();
 
             string url = baseUri + string.Format(_AdressUri, array) + _appID + _appKey;
-            WebRequest request = WebRequest.Create(url);
-            WebResponse myresponse = request.GetResponse();
-            var result = new System.Net.WebClient().DownloadString(url);
+            WebRequest addressrequest = WebRequest.Create(url);
+            WebResponse myresponse = addressrequest.GetResponse();
+            var addressresult = new System.Net.WebClient().DownloadString(url);
 
-            Address_Result _addresresponse = JsonConvert.DeserializeObject<Address_Result>(result);
+            Address_Result _addresresponse = JsonConvert.DeserializeObject<Address_Result>(addressresult);
             return _addresresponse;
         }
 

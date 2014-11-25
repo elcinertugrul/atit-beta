@@ -1,7 +1,0 @@
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\obj\Debug\GeoClient.dll
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\obj\Debug\GeoClient.pdb
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\bin\GeoClient.dll
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\bin\GeoClient.pdb
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\bin\Newtonsoft.Json.dll
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\bin\Newtonsoft.Json.pdb
-c:\users\elcin\documents\visual studio 2010\Projects\GeoClient\GeoClient\bin\Newtonsoft.Json.xml
