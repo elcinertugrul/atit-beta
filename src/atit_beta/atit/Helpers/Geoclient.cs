@@ -1,4 +1,9 @@
-﻿
+﻿// by Elcin Ertugrul 2015/02/15 
+
+// geoclient // NYC GeoClient Service 
+// AppId : 19de8714
+// Appkey : 8da912c7bf3b918510e633dfa356d55c 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +11,9 @@ using System.Text;
 using System.Runtime.Serialization.Json;
 using System.Net;
 using System.Xml.Linq;
-using Newtonsoft.Json;
+using Newtonsoft.Json; 
 
-namespace GeoClient
+namespace atit.Helpers
 {
 
     public class bin

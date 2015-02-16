@@ -31,19 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoClient">
-      <HintPath>..\GeoClient\bin\GeoClient.dll</HintPath>
-    </Reference>
     <Reference Include="GH_IO">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.75.0\GH_IO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\GH_IO.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GH_Util">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.75.0\GH_Util.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\GH_Util.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Grasshopper">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.75.0\Grasshopper.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\Grasshopper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.5.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\extrn\Json60r6\Net40\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoCommon">
@@ -53,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,9 +63,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeoCoder_AddressParser.cs" />
+    <Compile Include="GeoCoder_StreetView.cs" />
+    <Compile Include="Helpers\Geoclient.cs" />
+    <Compile Include="Helpers\GeoCoder.cs" />
     <Compile Include="nyc_geoclient_address.cs" />
     <Compile Include="nyc_geoclient_bin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\5_Boroughs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DataBinding.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DataBinding-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\datavis%40it.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dbind.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\feat%40it.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GeoCoder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Imp%40it.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Json-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shp%40it24X24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\StreetView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VizLinkeddata-01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

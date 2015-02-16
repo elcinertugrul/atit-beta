@@ -10,11 +10,7 @@ C:\Users\ELCIN\Documents\GitHub\atit-beta\src\GeoClient\atit\bin\Newtonsoft.Json
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\GeoClient\atit\bin\Newtonsoft.Json.xml
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\atit.dll
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\atit.pdb
-C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\GeoClient.dll
-C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.Json.dll
-C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\GeoClient.pdb
-C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.Json.pdb
-C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.Json.xml
-C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csprojResolveAssemblyReference.cache
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.dll
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.pdb
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.Properties.Resources.resources
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csproj.GenerateResource.Cache
