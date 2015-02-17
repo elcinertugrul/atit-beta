@@ -71,6 +71,19 @@ namespace atit.Helpers
             return test;
         }
 
+        public GoogleGeoCodeResponse ReverseGeocoding(string latlng)
+        {
+            string url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng; // + country zip code
+            WebRequest request = WebRequest.Create(url);
+            WebResponse myresponse = request.GetResponse();
+
+            var result = new System.Net.WebClient().DownloadString(url);
+            GoogleGeoCodeResponse test = JsonConvert.DeserializeObject<GoogleGeoCodeResponse>(result);
+            string f_address = test.results[0].formatted_address;
+            return test;
+        
+        }
+
         public GeoCoder() { }
     }
 }

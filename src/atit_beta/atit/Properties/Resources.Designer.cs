@@ -73,6 +73,16 @@ namespace atit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AddressLookup {
+            get {
+                object obj = ResourceManager.GetObject("AddressLookup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DataBinding {
             get {
                 object obj = ResourceManager.GetObject("DataBinding", resourceCulture);
