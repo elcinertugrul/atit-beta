@@ -18,6 +18,7 @@ using Rhino;
 
 using atit.Properties;
 using Rhino.Display;
+using Rhino.Geometry;
 
 namespace atit
 {
@@ -39,7 +40,16 @@ namespace atit
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Location", "L", "{latitude,longitude}", GH_ParamAccess.item);
-            pManager.AddTextParameter("File Path", "FP", "Specify the file path such as C:\\Temp\\StreetView.jpg ", GH_ParamAccess.item);
+            pManager.AddNumberParameter("width", "w", "Width", GH_ParamAccess.item, 600);
+            pManager[1].Optional = true;
+            pManager.AddNumberParameter("height", "h", "height", GH_ParamAccess.item, 400);
+            pManager[2].Optional = true;
+            pManager.AddNumberParameter("compass", "c", "indicates the compass heading of camera", GH_ParamAccess.item);
+            pManager[3].Optional = true;
+            pManager.AddNumberParameter("field of view", "fov", "field of view: max alloved value 120", GH_ParamAccess.item, 90);
+            pManager[4].Optional = true;
+            pManager.AddNumberParameter("picth", "p", "specifies the up & down angle of camera: set values -90 to 90 ", GH_ParamAccess.item, 0);
+            pManager[5].Optional = true;
         }
 
         /// <summary>
@@ -47,7 +57,7 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddMeshParameter("Image", "I", "Mesh presentation of Image", GH_ParamAccess.item);
+            pManager.AddGeometryParameter("Image", "I", "Mesh presentation of Image", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -57,53 +67,65 @@ namespace atit
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             string in_loc = null;
-            string inPath = null;
+            double width = 600;
+            double height = 400;
+            double compass = 0;
+            double fov = 90;
+            double picth = 0;
 
             if (!DA.GetData(0, ref in_loc)) { return; }
-            if (!DA.GetData<string>(1, ref inPath)) { return; }
+            DA.GetData(1, ref width);
+            DA.GetData(2, ref height);
+            DA.GetData(3, ref compass);
+            DA.GetData(4, ref fov);
+            DA.GetData(5, ref picth);
 
-            //File Directory Exists
-            try
-            {
-                string[] colonFrags = inPath.Split(':');
-                if (colonFrags.Length > 2 || inPath.Contains(";"))
-                {
-                    throw new Exception();
-                }
-
-                string inputFileName = Path.GetFileName(inPath);
-                char[] inValidChars = Path.GetInvalidFileNameChars();
-                string inValidString = Regex.Escape(new string(inValidChars));
-                string myNewValidFileName = Regex.Replace(inputFileName, "[" + inValidString + "]", "");
-
-                //if the replace worked, throw an error at the user.
-                if (inputFileName != myNewValidFileName)
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception)
-            {
-                //warn the user
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning,
-                    "Your file name is invalid - check your input and try again. No file path will be set.");
-            }
-
-            if (!Directory.Exists(Path.GetDirectoryName(inPath)))
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning,
-                     "The directory you specified does not exist. Please double check your input. No file path will be set.");
-            }
-
-            if (!isJpegFile(Path.GetExtension(inPath)))
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning,
-                    "Please provide a file of type .jpeg  Something like: 'C:\\Temp\\StreetView.jpg'. No file path will be set.");
-            }
 
             // Get Street View
             //string url = "http://maps.googleapis.com/maps/api/streetview?size=400x400&location=" + in_loc + "&fov=90&heading=235&pitch=10&sensor=false";
-            string url = "http://maps.googleapis.com/maps/api/streetview?size=600x400&location=" + in_loc;
+            //string url = "http://maps.googleapis.com/maps/api/streetview?size=600x400&location=" + in_loc;
+
+            string url = String.Format("http://maps.googleapis.com/maps/api/streetview?size={0}x{1}&location={2}", (int)width, (int)height, in_loc);
+
+            if (this.Params.Input[3].SourceCount > 0 ) // compass
+            {
+                if (compass >= 0 && compass <= 360)
+                {
+                    url = String.Format(url + "&heading={0}", (int)compass);
+                }
+                else 
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Out of range! Accepted values are from 0 to 360 (both values indicating North), with 90 indicating East, and 180 South");
+                }
+                
+            }
+            if( this.Params.Input[4].SourceCount > 0 ) // fov
+            {
+                if (fov  >= 0 && fov <= 120)
+                {
+                    url = String.Format(url + "&fov={0}", (int)fov);
+                }
+                else
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Out of range! Maximum allowed value is 120");
+                }
+                
+            }
+            if (this.Params.Input[5].SourceCount > 0) // pitch
+	        {
+                if (fov >= -90  && fov <= 90 )
+                {
+                    url = String.Format(url + "&pitch={0}", (int) picth);
+                }
+                else
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Out of range! Accepted values are from -90 to 90. 90 degree indicating straight up");
+                }
+                
+	        }
+
+            
+
             System.Net.WebRequest request = System.Net.WebRequest.Create(url);
             System.Net.WebResponse myresponse = request.GetResponse();
             // Open data stream:
@@ -111,15 +133,38 @@ namespace atit
             //string path = @"C:\Temp\streetview";
             var result = new System.Net.WebClient().DownloadData(url);
 
-            Image image = Image.FromStream(_WebStream);
-            image.Save(inPath, ImageFormat.Jpeg);
+            Image image = Image.FromStream(_WebStream, true);
+            Bitmap image1 = (Bitmap)image;
 
 
-            GH_Mesh m = new GH_Mesh();
-
+            int h = image.Size.Height;
+            int w = image.Size.Width;
             
-            
-            RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.SetWallpaper(inPath, true, true);
+
+            Rectangle3d rec = new Rectangle3d(Plane.WorldXY, new Point3d(0, 0, 0), new Point3d(w, h, 0));
+            Rhino.Geometry.Mesh rm = Mesh.CreateFromPlane(Plane.WorldXY, rec.X, rec.Y, w - 1, h - 1);
+
+            int test = rm.Vertices.Count();
+
+            List<Point3d> Pts = new List<Point3d>();
+            List<Color> colors = new List<Color>();
+
+            int[] facesint = new int[4];
+
+
+            for (int i = 0; i < h; i++)
+            {
+                for (int j = 0; j < w; j++)
+                {
+                    Color c = image1.GetPixel(j, h-i-1);
+                    colors.Add(c);
+                }
+            }
+
+            rm.VertexColors.CreateMonotoneMesh(Color.White);
+            rm.VertexColors.SetColors(colors.ToArray());
+
+            DA.SetData(0, rm);
         }
 
         /// <summary>
