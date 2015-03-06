@@ -63,11 +63,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coordinates2Statistics.cs" />
     <Compile Include="GeoCoder_AddressLookup.cs" />
     <Compile Include="GeoCoder_AddressParser.cs" />
     <Compile Include="GeoCoder_StreetView.cs" />
     <Compile Include="Helpers\Geoclient.cs" />
     <Compile Include="Helpers\GeoCoder.cs" />
+    <Compile Include="Helpers\Statistic.cs" />
     <Compile Include="nyc_geoclient_address.cs" />
     <Compile Include="nyc_geoclient_bin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,7 +122,7 @@
     <None Include="Resources\VizLinkeddata-01.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddressLookup.png" />
+    <EmbeddedResource Include="Resources\AddressLookup.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
