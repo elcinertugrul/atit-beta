@@ -17,6 +17,8 @@ namespace atit.Helpers
         public population_density population_density { get; set; }
         public elevation elevation { get; set; }
         public land_cover land_cover { get; set; }
+        public mean_temperature mean_temperature { get; set; }
+        public precipitation precipitation { get; set; }
     }
 
     public class population_density
@@ -40,6 +42,23 @@ namespace atit.Helpers
         public string value { get; set; }
         public string index { get; set; }
         public string source_name { get; set; }
+    }
+
+    public class mean_temperature
+    {
+        public string description { get; set; }
+        public List<string> value { get; set; }
+        public string source_name { get; set; }
+        public string units { get; set; }
+    
+    }
+
+    public class precipitation
+    {
+        public string description { get; set; }
+        public List<string> value { get; set; }
+        public string source_name { get; set; }
+        public string units { get; set; }    
     }
 
     public class Location

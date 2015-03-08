@@ -44,12 +44,16 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Population_Density", "Population", "Population Density", GH_ParamAccess.item);
-            pManager.AddTextParameter("Elevation", "Elevation", "Elevation", GH_ParamAccess.item);
+            pManager.AddTextParameter("Population_Density", "Population", "The number of inhabitants", GH_ParamAccess.item);
+            pManager.AddTextParameter("Elevation", "Elevation", "The height of the surface above sea level at this coordinate", GH_ParamAccess.item);
             pManager.AddTextParameter("ElevationUnits", "ElevationUnits", "ElevationUnits", GH_ParamAccess.item);
-            pManager.AddTextParameter("Landcover", "Landcover", "Landcover", GH_ParamAccess.item);
-            pManager.AddTextParameter("Notes", "Notes", "Notes", GH_ParamAccess.list);
+            pManager.AddTextParameter("MeanTemperature", "MeanTemperature", "The mean monthly temperature at this coordinate", GH_ParamAccess.list);
+            pManager.AddTextParameter("TemperatureUnits", "TemperatureUnits", "TemperatureUnits", GH_ParamAccess.item);
+            pManager.AddTextParameter("precipitation", "Precipitation", "The monthly average total precipitation at this coordinate", GH_ParamAccess.list);
+            pManager.AddTextParameter("PrecipitationUnits", "PrecipitationUnits", "PrecipitationUnits", GH_ParamAccess.item);
+            pManager.AddTextParameter("Landcover", "Landcover", "What type of environment exists around at this coordinate", GH_ParamAccess.item);
             pManager.AddTextParameter("Sources", "Sources", "Sources", GH_ParamAccess.list);
+            pManager.AddTextParameter("Notes", "Notes", "Notes", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -71,22 +75,37 @@ namespace atit
             List<string> sources = new List<string>();
 
             //string url = "http://www.datasciencetoolkit.org/coordinates2statistics/" + inCoordinates + "?statistics=population_density";
-            string url = "http://www.datasciencetoolkit.org/coordinates2statistics/" + lat+","+ lon + "?statistics=population_density,elevation,land_cover";
+            string url = "http://www.datasciencetoolkit.org/coordinates2statistics/" + lat + "," + lon + "?statistics=population_density,elevation,land_cover,mean_temperature,precipitation";
             WebRequest request = WebRequest.Create(url);
             WebResponse myresponse = request.GetResponse();
 
             var result = new System.Net.WebClient().DownloadString(url);
             Data[] test = JsonConvert.DeserializeObject<Data[]>(result);
 
+            //population density
             string p = test[0].statistics.population_density.value;
             descriptions.Add(test[0].statistics.population_density.description);
             sources.Add(test[0].statistics.population_density.source_name);
 
+            //Elevation
             string e = test[0].statistics.elevation.value;
             string eu = test[0].statistics.elevation.units;
             descriptions.Add(test[0].statistics.elevation.description);
             sources.Add(test[0].statistics.elevation.source_name);
 
+            //Mean-temperature
+            List<string> mt = test[0].statistics.mean_temperature.value;
+            string tu = test[0].statistics.mean_temperature.units;
+            descriptions.Add(test[0].statistics.mean_temperature.description);
+            sources.Add(test[0].statistics.mean_temperature.source_name);
+
+            //precipitation
+            List<string> pr = test[0].statistics.precipitation.value;
+            string pu = test[0].statistics.precipitation.units;
+            descriptions.Add(test[0].statistics.precipitation.description);
+            sources.Add(test[0].statistics.precipitation.source_name);
+
+            //Landcover
             string lc = test[0].statistics.land_cover.value;
             descriptions.Add(test[0].statistics.land_cover.description);
             sources.Add(test[0].statistics.land_cover.source_name);
@@ -94,9 +113,13 @@ namespace atit
             DA.SetData(0, p);
             DA.SetData(1, e);
             DA.SetData(2, eu);
-            DA.SetData(3, lc);
-            DA.SetDataList(4, descriptions);
-            DA.SetDataList(5, sources);
+            DA.SetDataList(3, mt);
+            DA.SetData(4, tu);
+            DA.SetDataList(5, pr);
+            DA.SetData(6, pu);
+            DA.SetData(7, lc);
+            DA.SetDataList(8, sources);
+            DA.SetDataList(9, descriptions);
         }
 
         /// <summary>
@@ -108,7 +131,7 @@ namespace atit
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.Coordinates2Stats;
             }
         }
 
