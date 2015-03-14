@@ -56,11 +56,91 @@ namespace atit
         {
             string url = "https://api.openstreetmap.org/api/0.6/map?bbox=-73.9915635,40.7380371,-73.9835635,40.7460371";
             
-            //WebRequest request = WebRequest.Create(url);
-            //WebResponse myresponse = request.GetResponse();
 
-            //var result = new System.Net.WebClient().DownloadString(url);
 
+
+            List<string> bldgIDs = new List<string>();
+
+            //char[] delimiterChars = {'<way id="'};
+            //string[] words = response.Split(delimiterChars);
+
+            string response = GetResponse(url);
+
+            //// parse xml response
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(response);
+
+            //// Get all Nodes at OSM 
+            //XmlNodeList nodeData = doc.GetElementsByTagName("node");
+
+            //Dictionary<string, List<double>> nodes = new Dictionary<string, List<double>>();
+            //for (int i = 0; i < nodeData.Count; i++)
+            //{
+            //    string id = nodeData[i].Attributes["id"].Value;
+            //    List<double> coords = new List<double>();
+
+            //    double lat = 0;
+            //    Double.TryParse(nodeData[i].Attributes["lat"].Value, out lat);
+            //    double lon = 0;
+            //    Double.TryParse(nodeData[i].Attributes["lon"].Value, out lon);
+            //    coords.Add(lat);
+            //    coords.Add(lon);
+            //    nodes.Add(id, coords);
+            //}
+
+            //// get all the data for ways
+            XmlNodeList	wayData = doc.GetElementsByTagName("way");
+
+            for (int i = 0; i < wayData.Count; i++)
+            {
+                string id = wayData[i].Attributes["id"].Value;
+                bldgIDs.Add(id);
+            }
+
+            List<OSMbuilding> Bldgs = new List<OSMbuilding>();
+            foreach (var id in bldgIDs)
+            {
+                url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
+                string response2 = GetResponse(url);
+
+                OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
+                // http://data.osmbuildings.org/0.2/rkc8ywdl/feature/248143998.json
+
+                //if (bldg.features[0].geometry != null)
+                //{
+                //    //double[,] coor= bldg.features[0].geometry.Coordinates.
+
+                //    //Bldgs.Add(bldg);
+                //}
+                
+            }
+
+        }
+
+        /// <summary>
+        /// Provides an Icon for the component.
+        /// </summary>
+        protected override System.Drawing.Bitmap Icon
+        {
+            get
+            {
+                //You can add image files to your project resources and access them like this:
+                // return Resources.IconForThisComponent;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the unique ID for this component. Do not change this ID after release.
+        /// </summary>
+        public override Guid ComponentGuid
+        {
+            get { return new Guid("{5115ba5a-2938-4938-99be-955b5e625639}"); }
+        }
+
+
+        public static string GetResponse(string url)
+        {
             string response = null;
             HttpWebRequest httpWebRequest = null;//Declare an HTTP-specific implementation of the WebRequest class.
             HttpWebResponse httpWebResponse = null;//Declare an HTTP-specific implementation of the WebResponse class
@@ -70,20 +150,6 @@ namespace atit
 
             try
             {
-                //byte[] bytes;
-                //bytes = System.Text.Encoding.ASCII.GetBytes(xmlContent);
-                ////Set HttpWebRequest properties
-                //httpWebRequest.Method = "POST";
-                //httpWebRequest.ContentLength = bytes.Length;
-                //httpWebRequest.ContentType = "text/xml; encoding='utf-8'";
-
-                //using (Stream requestStream = httpWebRequest.GetRequestStream())
-                //{
-                //    //Writes a sequence of bytes to the current stream 
-                //    requestStream.Write(bytes, 0, bytes.Length);
-                //    requestStream.Close();//Close stream
-                //}
-
                 //Sends the HttpWebRequest, and waits for a response.
                 httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
 
@@ -110,45 +176,9 @@ namespace atit
                 httpWebResponse = null;
                 httpWebRequest = null;
             }
-            
-            // parse xml response
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(response);
 
-            XmlNodeList nodeData = doc.GetElementsByTagName("node");
-
-            Dictionary<string, string> nodes = new Dictionary<string, string>();
-            for (int i = 0; i < nodeData.Count; i++)
-            {
-                string id = nodeData[i].Attributes["id"].Value;
-                string lat = nodeData[i].Attributes["lat"].Value;
-                string lon = nodeData[i].Attributes["lon"].Value;
-            }
-
-            // get all the data for ways
-			XmlNodeList	wayData = doc.GetElementsByTagName("way");
-
-        }
-
-        /// <summary>
-        /// Provides an Icon for the component.
-        /// </summary>
-        protected override System.Drawing.Bitmap Icon
-        {
-            get
-            {
-                //You can add image files to your project resources and access them like this:
-                // return Resources.IconForThisComponent;
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the unique ID for this component. Do not change this ID after release.
-        /// </summary>
-        public override Guid ComponentGuid
-        {
-            get { return new Guid("{5115ba5a-2938-4938-99be-955b5e625639}"); }
+            return response;
         }
     }
+
 }

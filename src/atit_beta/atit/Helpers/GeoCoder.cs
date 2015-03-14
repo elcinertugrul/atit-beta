@@ -36,6 +36,8 @@ namespace atit.Helpers
     {
         public string location_type { get; set; }
         public location location { get; set; }
+        public string type { get; set; }
+        public List<List<List<double>>> coordinates { get; set; }
     }
 
     public class location

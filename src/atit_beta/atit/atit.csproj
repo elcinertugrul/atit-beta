@@ -69,6 +69,8 @@
     <Compile Include="GeoCoder_StreetView.cs" />
     <Compile Include="Helpers\Geoclient.cs" />
     <Compile Include="Helpers\GeoCoder.cs" />
+    <Compile Include="Helpers\node.cs" />
+    <Compile Include="Helpers\OSMbuilding.cs" />
     <Compile Include="Helpers\Statistic.cs" />
     <Compile Include="nyc_geoclient_address.cs" />
     <Compile Include="nyc_geoclient_bin.cs" />
