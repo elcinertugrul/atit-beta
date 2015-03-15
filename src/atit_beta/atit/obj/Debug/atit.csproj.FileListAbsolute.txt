@@ -14,3 +14,5 @@ C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.dll
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.pdb
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.Properties.Resources.resources
 C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csproj.GenerateResource.Cache
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\ProjNet.dll
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\ProjNet.xml

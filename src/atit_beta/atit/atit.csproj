@@ -48,6 +48,9 @@
       <HintPath>..\..\..\extrn\Json60r6\Net40\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ProjNet">
+      <HintPath>..\..\..\extrn\ProjNet.1.2\ProjNet.dll</HintPath>
+    </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Rhinoceros 5.0\Plug-ins\Grasshopper\rh_common\RhinoCommon.dll</HintPath>
       <Private>False</Private>
@@ -67,6 +70,7 @@
     <Compile Include="GeoCoder_AddressLookup.cs" />
     <Compile Include="GeoCoder_AddressParser.cs" />
     <Compile Include="GeoCoder_StreetView.cs" />
+    <Compile Include="Helpers\Converter.cs" />
     <Compile Include="Helpers\Geoclient.cs" />
     <Compile Include="Helpers\GeoCoder.cs" />
     <Compile Include="Helpers\node.cs" />

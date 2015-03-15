@@ -25,6 +25,11 @@ namespace atit.Helpers
     public class properties
     {
         public string type { get; set; }
+        public double height { get; set; }
+        public double minHeight { get; set; }
+        public string color { get; set; }
+        public string roofShape { get; set; }
+        public double roofHeight { get; set; }
         public tags tags { get; set; }
     }
 
