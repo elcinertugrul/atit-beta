@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+
+//http://wiki.openstreetmap.org/wiki/Simple_3D_Buildings
 
 namespace atit.Helpers
 {
@@ -27,6 +30,19 @@ namespace atit.Helpers
 
     public class tags
     {
-        public string height { get; set;}
+        //height
+        public double height { get; set;}
+        public double min_height { get; set; }
+        //roof
+        [DataMember(Name= "roof:shape", EmitDefaultValue = false)]
+        public string roofshape { get; set; }
+        [DataMember(Name = "roof:height", EmitDefaultValue = false)]
+        public double roofheight { get; set; }
+        [DataMember(Name = "roof:orientation", EmitDefaultValue = false)]
+        public string rooforientation { get; set; }
+        [DataMember(Name = "roof:angle", EmitDefaultValue = false)]
+        public string roofangle { get; set; }
+        //surface
+
     }
 }
