@@ -7,6 +7,7 @@ using System.Xml;
 using System.Drawing;
 using Grasshopper;
 using Grasshopper.Kernel.Data;
+using atit.Properties;
 
 namespace atit
 {
@@ -22,14 +23,19 @@ namespace atit
         {
         }
 
+        public override GH_Exposure Exposure
+        {
+            //expose the object in the section on the toolbar
+            get { return GH_Exposure.primary; }
+        }
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Location", "LL", "{latitude,longitude}", GH_ParamAccess.item);
-            pManager.AddNumberParameter("X_Range", "x_r", "X Range", GH_ParamAccess.item, 100);
-            pManager.AddNumberParameter("Y_Range", "y_r", "Y Range", GH_ParamAccess.item, 100);
+            pManager.AddNumberParameter("Lat_Range", "lat_r", "Latitude Range", GH_ParamAccess.item, 100);
+            pManager.AddNumberParameter("Long_Range", "lon_r", "Longitude Range", GH_ParamAccess.item, 100);
             pManager.AddBooleanParameter("UTM<->WGS84", "UTM<->Lat/Long", "Set map/data projection: True UTM, False WGS84", GH_ParamAccess.item, true);
         }
 
@@ -203,7 +209,7 @@ namespace atit
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.osm_Trace_icon_01;
             }
         }
 

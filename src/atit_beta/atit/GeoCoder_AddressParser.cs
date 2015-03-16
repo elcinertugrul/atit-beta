@@ -17,10 +17,15 @@ namespace atit
         /// Initializes a new instance of the GeoCoder_AdressParser class.
         /// </summary>
         public GeoCoder_AddressParser()
-            : base("GeoCoder Address Parser", "AddressParser",
+            : base("Address Parser", "Address Parser",
                 "Uses Google API to parse addresses",
                 "@it", "GeoCoder")
         {
+        }
+        public override GH_Exposure Exposure
+        {
+            //expose the object in the section on the toolbar
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -28,7 +33,7 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Search Adress", "Address", "Input any address, no need to follow any format", GH_ParamAccess.item);
+            pManager.AddTextParameter("Address", "Addr", "Input string of any address or name of landmark, no need it to be perfect!  Will find it for u!", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -36,8 +41,8 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Formatted_Adress", "A", "Formatted Address", GH_ParamAccess.list);
-            pManager.AddTextParameter("Location", "L", "{latitude,longitude}", GH_ParamAccess.list);
+            pManager.AddTextParameter("Formatted Adress", "Addr", "Formatted Address", GH_ParamAccess.list);
+            pManager.AddTextParameter("Latitude,Longitude", "LL", "{latitude,longitude}", GH_ParamAccess.list);
         }
 
         /// <summary>

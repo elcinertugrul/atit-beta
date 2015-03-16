@@ -26,7 +26,7 @@ namespace atit
         /// </summary>
         public Coordinates2Statistics()
             : base("Coordinates2Statistics", "Coordinates2Statistics",
-                "Description",
+                "Coordinate to Statistics http://www.datasciencetoolkit.org/",
                 "@it", "Statistics")
         {
         }

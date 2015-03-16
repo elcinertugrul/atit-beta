@@ -14,10 +14,16 @@ namespace atit
         /// Initializes a new instance of the GeoCoder_AddressLookup class.
         /// </summary>
         public GeoCoder_AddressLookup()
-            : base("Address Lookup", "AddressLookup",
-                "Reverse Geocoding from latitude/longitude value",
+            : base("Address Lookup", "Address Lookup",
+                "Reverse Geocoding: Address from {latitude,longitude} value",
                 "@it", "GeoCoder")
         {
+        }
+
+        public override GH_Exposure Exposure
+        {
+            //expose the object in the section on the toolbar
+            get { return GH_Exposure.primary; }
         }
 
         /// <summary>
@@ -25,7 +31,7 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Location", "L", "{latitude,longitude}", GH_ParamAccess.item);
+            pManager.AddTextParameter("Latitude,Longitude", "LL", "{latitude,longitude}", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -33,7 +39,7 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Formatted_Adress", "A", "Formatted Address", GH_ParamAccess.list);
+            pManager.AddTextParameter("Formatted Adress", "Addr", "Formatted Address", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -66,7 +72,7 @@ namespace atit
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Resources.AddressLookup;
+                return Resources.Address_lookup;
             }
         }
 

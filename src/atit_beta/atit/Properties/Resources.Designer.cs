@@ -73,6 +73,16 @@ namespace atit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Address_lookup {
+            get {
+                object obj = ResourceManager.GetObject("Address_lookup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddressLookup {
             get {
                 object obj = ResourceManager.GetObject("AddressLookup", resourceCulture);
@@ -166,6 +176,36 @@ namespace atit.Properties {
         internal static System.Drawing.Bitmap Json_01 {
             get {
                 object obj = ResourceManager.GetObject("Json_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OSM_bldgs_icon_01 {
+            get {
+                object obj = ResourceManager.GetObject("OSM_bldgs_icon_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap osm_geoJson_01 {
+            get {
+                object obj = ResourceManager.GetObject("osm_geoJson_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap osm_Trace_icon_01 {
+            get {
+                object obj = ResourceManager.GetObject("osm_Trace_icon_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

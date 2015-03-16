@@ -30,20 +30,25 @@ namespace atit
         /// Initializes a new instance of the osm_bldgs class.
         /// </summary>
         public osm_bldgs()
-            : base("osm_bldgs", "Nickname",
-                "Imports & Draw OSM 3D Buildings",
+            : base("osm_Bldgs", "osm_Buildings",
+                "Imports & Draws OSM 3D Buildings",
                 "@it", "OSM")
         {
         }
 
+        public override GH_Exposure Exposure
+        {
+            //expose the object in the section on the toolbar
+            get { return GH_Exposure.secondary; }
+        }
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Location", "LL", "{latitude,longitude}", GH_ParamAccess.item);
-            pManager.AddNumberParameter("X_Range", "x_r", "X Range", GH_ParamAccess.item, 100);
-            pManager.AddNumberParameter("Y_Range", "y_r", "Y Range", GH_ParamAccess.item, 100);
+            pManager.AddTextParameter("Latitude,Longitude", "LL", "{latitude,longitude}", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Lat_Range", "lat_r", "Latitude Range", GH_ParamAccess.item, 100);
+            pManager.AddNumberParameter("Long_Range", "lon_r", "Longitude Range", GH_ParamAccess.item, 100);
         }
 
         /// <summary>
@@ -51,9 +56,8 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            
-            pManager.AddBrepParameter("osm_3D_bldgs", "osm_3D_Bldgs", "OSM 3D Buildings", GH_ParamAccess.list);
             pManager.AddTextParameter("osm_IDs", "osm_IDs", "osm IDs", GH_ParamAccess.list);
+            pManager.AddBrepParameter("osm_3D_bldgs", "osm_3D_Bldgs", "OSM 3D Buildings", GH_ParamAccess.list); 
             pManager.AddColourParameter("osm_Bldg_Colours", "osm_Bldg_Colours", "For OSM Buildings and Land Use Colours See http://wiki.openstreetmap.org/wiki/OpenStreetBrowser/Landuse-_and_Building_Colors", GH_ParamAccess.list);
         }
 
@@ -99,9 +103,6 @@ namespace atit
             //// parse xml response
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(response);
-
-
-
 
             //// get all the data for ways
             XmlNodeList wayData = doc.GetElementsByTagName("way");
@@ -151,14 +152,12 @@ namespace atit
                     out_Colors.Add(c);
                 }
 
-
             }
 
             // Set Outputs
-            DA.SetDataList(0, out_Geometry);
-            DA.SetDataList(1, out_bldgIDs);
+            DA.SetDataList(0, out_bldgIDs);
+            DA.SetDataList(1, out_Geometry);
             DA.SetDataList(2, out_Colors);
-
         }
 
         /// <summary>
@@ -170,7 +169,7 @@ namespace atit
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.OSM_bldgs_icon_01;
             }
         }
 

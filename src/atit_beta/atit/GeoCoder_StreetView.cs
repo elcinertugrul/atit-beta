@@ -28,10 +28,16 @@ namespace atit
         /// Initializes a new instance of the GeoCoder_StreetView class.
         /// </summary>
         public GeoCoder_StreetView()
-            : base("GeoCoder_StreetView", "StreetView",
+            : base("Street View", "Street View",
                 "Uses Google API to get street view",
                 "@it", "GeoCoder")
         {
+        }
+
+        public override GH_Exposure Exposure
+        {
+            //expose the object in the section on the toolbar
+            get { return GH_Exposure.tertiary; }
         }
 
         /// <summary>

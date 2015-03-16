@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Text;
+using atit.Properties;
 
 
 namespace atit
@@ -19,10 +20,16 @@ namespace atit
         /// Initializes a new instance of the osm_bldgInfo class.
         /// </summary>
         public osm_bldgInfo()
-            : base("osm_bldgInfo", "osm_bldgInfo",
-                "Gets information of OSM Bldgs",
+            : base("osm_BldgInfo", "osm_BldgInfo",
+                "Returns more data of OSM Buildings",
                 "@it", "OSM")
         {
+        }
+
+        public override GH_Exposure Exposure
+        {
+            //expose the object in the section on the toolbar
+            get { return GH_Exposure.tertiary; }
         }
 
         /// <summary>
@@ -56,7 +63,7 @@ namespace atit
             pManager.AddNumberParameter("roof:angle", "roof:angle", "roof:angle", GH_ParamAccess.item);
             pManager.AddTextParameter("roof:material", "roof:material", "roof:material", GH_ParamAccess.item);
             pManager.AddColourParameter("roof:color", "roof:color", "roof:color", GH_ParamAccess.item);
-            pManager.AddTextParameter("geoJson", "geoJson", "geoJson", GH_ParamAccess.item);
+            //pManager.AddTextParameter("geoJson", "geoJson", "geoJson", GH_ParamAccess.item);
            
         }
 
@@ -117,7 +124,7 @@ namespace atit
                 DA.SetData(15, rc);
             }
 
-            DA.SetData(16, response2);
+            //DA.SetData(16, response2);
         }
 
         /// <summary>
@@ -129,7 +136,7 @@ namespace atit
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.osm_geoJson_01;
             }
         }
 

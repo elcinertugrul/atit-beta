@@ -136,6 +136,18 @@
   <ItemGroup>
     <None Include="Resources\Coordinates2Stats.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Address_lookup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\osm_Trace_icon-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OSM_bldgs_icon-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\osm_geoJson-01.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).gha"
