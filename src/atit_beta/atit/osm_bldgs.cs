@@ -101,23 +101,7 @@ namespace atit
             doc.LoadXml(response);
 
 
-            //// Get all Nodes at OSM 
-            //XmlNodeList nodeData = doc.GetElementsByTagName("node");
 
-            //Dictionary<string, List<double>> nodes = new Dictionary<string, List<double>>();
-            //for (int i = 0; i < nodeData.Count; i++)
-            //{
-            //    string id = nodeData[i].Attributes["id"].Value;
-            //    List<double> coords = new List<double>();
-
-            //    double lat = 0;
-            //    Double.TryParse(nodeData[i].Attributes["lat"].Value, out lat);
-            //    double lon = 0;
-            //    Double.TryParse(nodeData[i].Attributes["lon"].Value, out lon);
-            //    coords.Add(lat);
-            //    coords.Add(lon);
-            //    nodes.Add(id, coords);
-            //}
 
             //// get all the data for ways
             XmlNodeList wayData = doc.GetElementsByTagName("way");
