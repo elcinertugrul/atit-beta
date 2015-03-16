@@ -20,7 +20,7 @@ namespace atit
         public NYC_BindShps()
             : base("Bind two Shapefiles (datasets)", "Data Bind",
                 "Bind data sets per common attribute BIN = Building Identification Number",
-                "@it", "SHAPE_NYC")
+                "@it", "SHP_NYC")
         {
         }
         public override GH_Exposure Exposure
@@ -33,8 +33,8 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Shapes_NYC_Taxmap", "Shps_NYCTaxMap", "Input Shapes imported from NYC Tax Map", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Shapes_NYC_BldgFootprint", "Shps_BldgFootPrint", "Input Shapes imported from NYC Buildings Footprint", GH_ParamAccess.list);
+            pManager.AddGenericParameter("S_NYC_Taxmap", "S_NYC_TaxMap", "Input Shapes imported from NYC Tax Map", GH_ParamAccess.list);
+            pManager.AddGenericParameter("S_NYC_BldgFootprints", "S_NYC_BldgFootPrints", "Input Shapes imported from NYC Buildings Footprint", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Linked_Shps", "Linked_Shps", "Linked Shapes", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Linked Shapes", "Linked_Shapes", "Linked Shapes", GH_ParamAccess.list);
         }
 
         /// <summary>

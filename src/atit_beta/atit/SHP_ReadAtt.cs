@@ -15,8 +15,8 @@ namespace atit
         /// </summary>
         public SHP_ReadAtt()
             : base("feat@it", "feat@it",
-                "Read features of specified Shape (.shp) file",
-                "@it", "SHAPE")
+                "Look up component for Shape (.shp) files",
+                "@it", "SHP")
         {
         }
         public override GH_Exposure Exposure
@@ -29,7 +29,7 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Path", "P", "Specify path of the file", GH_ParamAccess.item);
+            pManager.AddTextParameter("Shapefile (.shp) Path", "C:/", "Specify path of the shapefile", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Geometry Type", "T", "Geometric Data Type of shape (.shp) file", GH_ParamAccess.item);
-            pManager.AddTextParameter("Projection Type", "P", "Projection Type of shape (.shp) file", GH_ParamAccess.item);
+            pManager.AddTextParameter("Geometry Type", "T", "Spatial Data Type of shape file (.shp)", GH_ParamAccess.item);
+            pManager.AddTextParameter("Projection Type", "P", "Projection Type of shape file (.shp)", GH_ParamAccess.item);
             pManager.AddTextParameter("Features", "F", " Features of specified shape (.shp) file ", GH_ParamAccess.list);
            
         }

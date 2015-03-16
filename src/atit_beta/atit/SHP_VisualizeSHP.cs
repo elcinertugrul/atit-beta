@@ -20,7 +20,7 @@ namespace atit
         public SHP_VisualizeSHP()
             : base("DataVis@it", "DataVis@it",
                 "Visualize spatial and nonspatial data of speficied shape (.shp) file",
-                "@it", "SHAPE")
+                "@it", "SHP")
         {
         }
 
@@ -34,12 +34,11 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Shapes", "O", "Input Shape Objects", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Shapes", "S", "Input Shape Objects", GH_ParamAccess.list);
             pManager.AddTextParameter("FilterByFeat", "[FltrByFeat]", "Filter speficic feature [optional]", GH_ParamAccess.item);
-            //pManager.AddTextParameter("FilterByFeat", "[FltrByFeat]", "Filter speficic feature [optional]", GH_ParamAccess.list);
-            pManager.AddTextParameter("FilterByFeatureValues", "[FltrByVal]", "Filter by value of the Feature [optional]", GH_ParamAccess.list);
+            pManager.AddTextParameter("FilterByFeatureValue", "[FltrByVal]", "Filter by value of the Feature [optional]", GH_ParamAccess.list);
             pManager.AddTextParameter("GetValueofFeature", "GetValofFeat", "Get value of specified features only", GH_ParamAccess.list);
-            pManager.AddBooleanParameter("Boolean", "T/F", "Boolean True or False. Set True to run", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("True or False", "T||F", "Set Boolean True to import shape files", GH_ParamAccess.item);
             pManager[1].Optional = true;
             pManager[2].Optional = true;
         }
@@ -52,8 +51,6 @@ namespace atit
             pManager.Register_CurveParam("Polygon", "P", "Polygon geometry of shapefile");
             pManager.Register_CurveParam("Polyline", "PLine", "Polyline geometry of shapefile");
             pManager.Register_PointParam("Point", "Pt", "Point geometry of shapefile");
-            //pManager.AddCurveParameter("Polyline", "P", "Polygon geometry of shapefile", GH_ParamAccess.list);
-            //pManager.Register_GeometryParam("Geometry", "G", "Geometry of shapefile: Polygon, Polyline, Point");
             pManager.Register_StringParam("AttValues", "Val", "Tree_AttValues");
         }
 

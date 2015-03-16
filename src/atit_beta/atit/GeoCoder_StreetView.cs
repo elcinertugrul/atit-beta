@@ -45,7 +45,7 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Location", "L", "{latitude,longitude}", GH_ParamAccess.item);
+            pManager.AddTextParameter("Latitude,Longitude", "LL", "{latitude,longitude}", GH_ParamAccess.item);
             pManager.AddNumberParameter("width", "w", "Width", GH_ParamAccess.item, 600);
             pManager[1].Optional = true;
             pManager.AddNumberParameter("height", "h", "height", GH_ParamAccess.item, 400);

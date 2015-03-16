@@ -19,7 +19,7 @@ namespace atit
         public NYC_VisualizeLinkedData()
             : base("VisualizeLinkedData", "VisualizeLinkedData",
                 "Visualize spatial and non spatial data",
-                "@it", "SHAPE_NYC")
+                "@it", "SHP_NYC")
         {
         }
 
@@ -33,11 +33,11 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Shapes", "SHPs", "Input Shape Objects", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Linked Shapes", "Linked_Shapes", "Input Linked Shape Objects", GH_ParamAccess.list);
             pManager.AddTextParameter("FilterByAtt", "[FilterByAtt]", "Filter By Att", GH_ParamAccess.item);
             pManager.AddTextParameter("FilterAttValues", "[FilterValues]", "Filter by Att_Names or Values", GH_ParamAccess.list);
             pManager.AddTextParameter("GetAtt_Value", "GetAtt_Value", "GetAtt_Value", GH_ParamAccess.list);
-            pManager.AddBooleanParameter("trigger", "T/F", "Boolean True or False", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("True or False", "T||F", "Set Boolean True to import shape files", GH_ParamAccess.item);
             pManager[1].Optional = true;
             pManager[2].Optional = true;
         }

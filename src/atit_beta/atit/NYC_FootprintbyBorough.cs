@@ -18,7 +18,7 @@ namespace atit
             : base("FootprintbyBorough", "Footprint data set",
                 "Sort by Borough. Use shapefile of footprint outlines of buildings in NYC.\n\n" + "https://data.cityofnewyork.us/Housing-Development/Building-Footprints/tb92-6tj8"+
             "\n\n You could also use any shape file has feature 'BBL' to sort by borough",
-                "@it", "SHAPE_NYC")
+                "@it", "SHP_NYC")
         {
         }
 
@@ -32,7 +32,7 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("File_Path", "P", "File_Path", GH_ParamAccess.item);
+            pManager.AddTextParameter("Shapefile (.shp) Path", "C:/", "Specify path of the shapefile", GH_ParamAccess.item);
             pManager.AddTextParameter("Borough Code", "B", "Set value from 1 to 5. Borough Codes: 1=Manhattan 2=Bronx 3=Brooklyn 4=Queens 5=Staten Islad ", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Boolean", "T/F", "Set boolean True to import .shp file", GH_ParamAccess.item);
             pManager[2].Optional = true;
@@ -70,7 +70,7 @@ namespace atit
             {
                 // check first borough code is given not out of index
                 
-                if (b == "1" || b == "2" || b== "3" || b=="4" || b=="5" )
+                if (b == "1" || b == "2" || b== "3" || b== "4" || b== "5" )
                 {
                     // instantiate
                     Helpers.GIS gisfile = new Helpers.GIS(filepath, b);

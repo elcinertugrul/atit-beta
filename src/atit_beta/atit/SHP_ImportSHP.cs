@@ -18,7 +18,7 @@ namespace atit
         public SHP_ImportSHP()
             : base("Imp@It", "Imp@It",
                 "Import and store shapes as system objects",
-                "@it", "SHAPE")
+                "@it", "SHP")
         {
         }
 
@@ -32,9 +32,9 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Path", "P", "Specify path of the file", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("ReProject?", "ReProject?", "Set True if change the map projection to WGS84 datum, default is false", GH_ParamAccess.item, false);
-            pManager.AddBooleanParameter("Boolean", "T/F", "Boolean True or False. Set Boolean True to run", GH_ParamAccess.item);
+            pManager.AddTextParameter("Shapefile (.shp) Path", "C:/", "Specify path of the shapefile", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Project 2 WGS84", "-->WGS84", "Set True if change the map projection to WGS84 datum, default is false", GH_ParamAccess.item, false);
+            pManager.AddBooleanParameter("True or False", "T||F", "Set Boolean True to import shape files", GH_ParamAccess.item);
             pManager[2].Optional = false;
         }
 
@@ -44,7 +44,7 @@ namespace atit
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Shapes", "S", "Shapes", GH_ParamAccess.list);
-            pManager.AddTextParameter("Features", "F", " Features of specified shape (.shp) file ", GH_ParamAccess.list);
+            pManager.AddTextParameter("Features", "F", " Features of given shape (.shp) file ", GH_ParamAccess.list);
             //pManager.RegisterParam(IGH_Param Param, "Objects", "out","Shapeobjets","",GH_ParamAccess.list);
         }
 
