@@ -52,9 +52,9 @@ namespace atit
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             
-            pManager.AddBrepParameter("osm3Dbldgs", "osm_3D_Bldgs", "OSM 3D Buildings", GH_ParamAccess.list);
-            pManager.AddTextParameter("osmIDs", "osm_IDs", "osm IDs", GH_ParamAccess.list);
-            pManager.AddColourParameter("Buildings colors", "osm_Bldg_Colours", "For OSM Buildings and Land Use Colours See http://wiki.openstreetmap.org/wiki/OpenStreetBrowser/Landuse-_and_Building_Colors", GH_ParamAccess.list);
+            pManager.AddBrepParameter("osm_3D_bldgs", "osm_3D_Bldgs", "OSM 3D Buildings", GH_ParamAccess.list);
+            pManager.AddTextParameter("osm_IDs", "osm_IDs", "osm IDs", GH_ParamAccess.list);
+            pManager.AddColourParameter("osm_Bldg_Colours", "osm_Bldg_Colours", "For OSM Buildings and Land Use Colours See http://wiki.openstreetmap.org/wiki/OpenStreetBrowser/Landuse-_and_Building_Colors", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -152,27 +152,9 @@ namespace atit
                 }
 
 
-                ////For OSM data parsing
-                //foreach (XmlNode child in wayData[i].ChildNodes)
-                //{
-                //    // geometry
-                //    if (child.Name =="nd")
-                //    {
-                //        string nodeid = child.Attributes["ref"].Value;
-                //    }
-                //    // add this to tag output
-                //    if (child.Name == "tag")
-                //    {   
-                //        string k = child.Attributes["k"].Value;
-                //        string v = child.Attributes["v"].Value;
-                //    }
-                //}
-
-                // 
-
             }
 
-            // Output Brep Geometry
+            // Set Outputs
             DA.SetDataList(0, out_Geometry);
             DA.SetDataList(1, out_bldgIDs);
             DA.SetDataList(2, out_Colors);
