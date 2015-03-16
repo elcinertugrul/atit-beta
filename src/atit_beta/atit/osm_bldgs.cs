@@ -12,6 +12,7 @@ using System.Runtime.Serialization.Json;
 using System.Net;
 using System.Xml.Linq;
 using Newtonsoft.Json; // http://json.codeplex.com/
+using System.Drawing;
 
 using Grasshopper.Kernel;
 using Grasshopper;
@@ -40,8 +41,9 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Location", "L", "{latitude,longitude}", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Range", "r", "Range", GH_ParamAccess.item, 100);
+            pManager.AddTextParameter("Location", "LL", "{latitude,longitude}", GH_ParamAccess.item);
+            pManager.AddNumberParameter("X_Range", "x_r", "X Range", GH_ParamAccess.item, 100);
+            pManager.AddNumberParameter("Y_Range", "y_r", "Y Range", GH_ParamAccess.item, 100);
         }
 
         /// <summary>
@@ -49,8 +51,10 @@ namespace atit
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("OSMID", "OSMID", "OSMID", GH_ParamAccess.list);
-            pManager.AddBrepParameter("OSM3DBuildings", "OSM3DBLDGS", "OSM 3D Buildings", GH_ParamAccess.list);
+            
+            pManager.AddBrepParameter("osm3Dbldgs", "osm_3D_Bldgs", "OSM 3D Buildings", GH_ParamAccess.list);
+            pManager.AddTextParameter("osmIDs", "osm_IDs", "osm IDs", GH_ParamAccess.list);
+            pManager.AddColourParameter("Buildings colors", "osm_Bldg_Colours", "For OSM Buildings and Land Use Colours See http://wiki.openstreetmap.org/wiki/OpenStreetBrowser/Landuse-_and_Building_Colors", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -59,20 +63,35 @@ namespace atit
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            double range = 100;
-            string Location = string.Empty; // defense for Location
+            double x_range = 100;
+            double y_range = 100;
+            string Location = string.Empty; // defense for LL
 
             if (!DA.GetData(0, ref Location)) { return; }
-            if (!DA.GetData(1, ref range)) { }
+            if (!DA.GetData(1, ref x_range)) { }
+            if (!DA.GetData(2, ref y_range)) { }
 
-            double x = range * Math.Pow(10, -5);
-
+            double x = x_range * Math.Pow(10, -5);
+            double y = y_range * Math.Pow(10, -5);
 
             List<string> out_bldgIDs = new List<string>();
             List<Brep> out_Geometry = new List<Brep>();
-            List<Curve> out_Curves = new List<Curve>();
+            List<Color> out_Colors = new List<Color>();
 
-            string url = "http://api.openstreetmap.org/api/0.6/map?bbox=-73.9930835,40.7338633,-73.9890835,40.7378633";
+            // Construct url = (min long, min lat, max long, max lat)
+            string[] words = Location.Split(',');
+            double lat = 0;
+            double lon = 0;
+            Double.TryParse(words[0], out lat);
+            Double.TryParse(words[1], out lon);
+
+            string minlong = (lon - x).ToString();
+            string maxlog = (lon + x).ToString();
+            string minlat = (lat - y).ToString();
+            string maxlat = (lat + y).ToString();
+
+           string url = "http://api.openstreetmap.org/api/0.6/map?bbox="+ minlong + "," + minlat + "," +  maxlog + "," + maxlat;
+            // string url = "http://api.openstreetmap.org/api/0.6/map?bbox=-73.9930835,40.7338633,-73.9890835,40.7378633";
             //"https://api.openstreetmap.org/api/0.6/map?bbox=-73.9915635,40.7380371,-73.9835635,40.7460371";
 
             string response = GetResponse(url);
@@ -138,14 +157,14 @@ namespace atit
                     }
                 }
 
-
-
-                Brep outB = Get3Dbuilding(id, height, minheight, roofshape, roofheight);
+                Color c = Color.White;
+                Brep outB = Get3Dbuilding(id, height, minheight, roofshape, roofheight, ref c);
 
                 if (outB != null)
                 {
                     out_Geometry.Add(outB);
                     out_bldgIDs.Add(id);
+                    out_Colors.Add(c);
                 }
 
 
@@ -169,10 +188,10 @@ namespace atit
 
             }
 
-
             // Output Brep Geometry
-            DA.SetDataList(0, out_bldgIDs);
-            DA.SetDataList(1, out_Geometry);
+            DA.SetDataList(0, out_Geometry);
+            DA.SetDataList(1, out_bldgIDs);
+            DA.SetDataList(2, out_Colors);
 
         }
 
@@ -239,7 +258,7 @@ namespace atit
             return response;
         }
 
-        public static Brep Get3Dbuilding(string id, double osm_height, double osm_minheight, string roofshape, double roofheight)
+        public static Brep Get3Dbuilding(string id, double osm_height, double osm_minheight, string roofshape, double roofheight, ref Color c)
         {
 
             Brep b = null;
@@ -249,8 +268,14 @@ namespace atit
 
             OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
             // http://data.osmbuildings.org/0.2/rkc8ywdl/feature/248143998.json
-            double Z_factor = 10;
-            double S_factor = 1000000;
+            string inUnits = Rhino.RhinoDoc.ActiveDoc.GetUnitSystemName(true, false, false, true);
+            if (inUnits.ToLower() == "millimeter" || inUnits.ToLower() == "mm") inUnits = "mm";
+            else if (inUnits.ToLower() == "meter" || inUnits.ToLower() == "m") inUnits = "m";
+            else if (inUnits.ToLower() == "inch" || inUnits.ToLower() == "inches" || inUnits.ToLower() == "in") inUnits = "in";
+            else if (inUnits.ToLower() == "foot" || inUnits.ToLower() == "feet" || inUnits.ToLower() == "ft") inUnits = "ft";
+
+            double factor = Helpers.Converter.defineConversion("m", inUnits);
+
 
             if (bldg.features.Length > 0)
             {
@@ -259,11 +284,21 @@ namespace atit
                 {
                     if (bldg.features[0].geometry.type == "Polygon" && bldg.features[0].properties.tags.height != 0)
                     {
+                        // Color 
+                        if (bldg.features[0].properties.color != null)
+                        {
+                            c = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.color); 
+                        }
+
                         // Local variables
                         List<Point3d> mypoints = new List<Point3d>();
                         foreach (var coord in bldg.features[0].geometry.coordinates[0])
                         {
-                            mypoints.Add(new Point3d(coord[0] * S_factor, coord[1] * S_factor, 0));
+                            double easting = 0;
+                            double northing = 0;
+                            Helpers.Converter.ConvertToUtmString(coord[0], coord[1], ref easting, ref northing);
+
+                            mypoints.Add(new Point3d(easting*factor, northing*factor, 0));
                         }
 
                         //mypoints.RemoveAt(mypoints.Count - 1);
@@ -276,14 +311,14 @@ namespace atit
                         if (bldg.features[0].properties.roofShape == "flat" || bldg.features[0].properties.roofShape == null) // || bldg.features[0].properties.tags.roofshape == "flat" || bldg.features[0].properties.tags.roofshape == null
                         {
                             // set upper curve
-                            Vector3d topdir = new Vector3d(0, 0, bldg.features[0].properties.height * Z_factor);
+                            Vector3d topdir = new Vector3d(0, 0, bldg.features[0].properties.height * factor);
                             Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
                             topCrv.Translate(topdir);
                             // set lower curve
                             double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
                             if (minH != 0)
                             {
-                                Vector3d bottomdir = new Vector3d(0, 0, minH * Z_factor);
+                                Vector3d bottomdir = new Vector3d(0, 0, minH * factor);
                                 footprint.Translate(bottomdir);
                             }
 
@@ -299,7 +334,7 @@ namespace atit
 
                             // Create roof (footprint it on the 0 level)
                             Point3d cpt = Rhino.Geometry.AreaMassProperties.Compute(footprint).Centroid;
-                            double aheight = (bldg.features[0].properties.roofHeight) * Z_factor; //bldg.features[0].properties.tags.roofheight * Z_factor;
+                            double aheight = (bldg.features[0].properties.roofHeight) * factor; //bldg.features[0].properties.tags.roofheight * Z_factor;
                             Point3d topPt = Rhino.Geometry.Point3d.Add(cpt, new Vector3d(0, 0, aheight));
 
                             List<Brep> roofsrfs = new List<Brep>();
@@ -311,7 +346,7 @@ namespace atit
 
                             //Join extrusion and roof
                             Brep JoinedRoof = Rhino.Geometry.Brep.JoinBreps(roofsrfs, 0.001)[0];
-                            double bheight = (bldg.features[0].properties.height - bldg.features[0].properties.roofHeight) * Z_factor;
+                            double bheight = (bldg.features[0].properties.height - bldg.features[0].properties.roofHeight) * factor;
                             JoinedRoof.Translate(0, 0, bheight);
 
                             //Create extrusion
@@ -323,7 +358,7 @@ namespace atit
                             double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
                             if (minH != 0)
                             {
-                                Vector3d bottomdir = new Vector3d(0, 0, minH * Z_factor);
+                                Vector3d bottomdir = new Vector3d(0, 0, minH * factor);
                                 footprint.Translate(bottomdir);
                             }
 
@@ -338,15 +373,16 @@ namespace atit
                             geos.Add(JoinedRoof);
                             Brep joinedgeo = Rhino.Geometry.Brep.JoinBreps(geos, 0.001)[0];
 
-                            //b = joinedgeo.CapPlanarHoles(0.001);
                             b = joinedgeo.CapPlanarHoles(0.001);
 
                         }
                         else if (bldg.features[0].properties.roofShape == "gabled") //|| bldg.features[0].properties.tags.roofshape == "gabled"
                         {
-                            double aheight = bldg.features[0].properties.tags.roofheight * Z_factor;
+                            double aheight = bldg.features[0].properties.roofHeight * factor;
+                            double bheight = (bldg.features[0].properties.height - bldg.features[0].properties.roofHeight) * factor;
                             if (mypoints.Count == 4)
                             {
+                                //create roof
                                 List<Point3d> list1 = new List<Point3d>(); list1.Add(mypoints[0]); list1.Add(mypoints[1]);
                                 Curve crv1 = new PolylineCurve(list1).ToNurbsCurve();
                                 Point3d mid0 = crv1.PointAt(0.5);
@@ -358,13 +394,33 @@ namespace atit
                                 mid1.Z = aheight;
 
                                 Brep roofSrf = Rhino.Geometry.Brep.CreateFromCornerPoints(mypoints[0], mid0, mid1, mypoints[3], 0);
-                                roofSrf.Translate(0, 0, bldg.features[0].properties.tags.height);
+                                roofSrf.Translate(0, 0, bheight);
                                 Brep roofSrf2 = Rhino.Geometry.Brep.CreateFromCornerPoints(mypoints[1], mid0, mid1, mypoints[2], 0);
-                                roofSrf2.Translate(0, 0, bldg.features[0].properties.tags.height * Z_factor);
+                                roofSrf2.Translate(0, 0, bheight);
+
+                                //Create extrusion
+                                // set upper curve
+                                Vector3d topdir = new Vector3d(0, 0, bheight);
+                                Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
+                                topCrv.Translate(topdir);
+                                // set lower curve
+                                double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
+                                if (minH != 0)
+                                {
+                                    Vector3d bottomdir = new Vector3d(0, 0, minH * factor);
+                                    footprint.Translate(bottomdir);
+                                }
+
+                                List<Curve> crvslist = new List<Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
+                                Curve[] crvs = crvslist.ToArray();
+
+                                Brep[] extrusion = Rhino.Geometry.Brep.CreateFromLoft(crvs, Point3d.Unset, Point3d.Unset, Rhino.Geometry.LoftType.Normal, false);
 
                                 //Join Extrusion and roof
-                                List<Brep> geos = new List<Brep>(); //geos.Add(extrusion[0]); 
-                                geos.Add(roofSrf); geos.Add(roofSrf2);
+                                List<Brep> geos = new List<Brep>(); 
+                                geos.Add(extrusion[0]); 
+                                geos.Add(roofSrf); 
+                                geos.Add(roofSrf2);
                                 Brep joinedgeo = Rhino.Geometry.Brep.JoinBreps(geos, 0.001)[0];
 
                                 b = joinedgeo.CapPlanarHoles(0.001);
@@ -374,23 +430,41 @@ namespace atit
                         else if (bldg.features[0].properties.roofShape == "skillion") // || bldg.features[0].properties.tags.roofshape == "skillion"
                         {
                             // first two points is the lowest 
-                            double aheight = bldg.features[0].properties.tags.roofheight * Z_factor;
+                            double aheight = bldg.features[0].properties.roofHeight * factor;
+                            double bheight = (bldg.features[0].properties.height - bldg.features[0].properties.roofHeight) * factor;
                             if (mypoints.Count == 4)
                             {
+                                // Create roof
                                 Point3d pt2 = new Point3d(mypoints[2].X, mypoints[2].Y, aheight);
                                 Point3d pt3 = new Point3d(mypoints[3].X, mypoints[3].Y, aheight);
                                 Brep roofSrf = Rhino.Geometry.Brep.CreateFromCornerPoints(mypoints[0], mypoints[1], pt2, pt3, 0);
-                                roofSrf.Translate(0, 0, bldg.features[0].properties.tags.height * Z_factor);
+                                roofSrf.Translate(0, 0, bheight);
+
+                                //Create extrusion
+                                // set upper curve
+                                Vector3d topdir = new Vector3d(0, 0, bheight);
+                                Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
+                                topCrv.Translate(topdir);
+                                // set lower curve
+                                double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
+                                if (minH != 0)
+                                {
+                                    Vector3d bottomdir = new Vector3d(0, 0, minH * factor);
+                                    footprint.Translate(bottomdir);
+                                }
+
+                                List<Curve> crvslist = new List<Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
+                                Curve[] crvs = crvslist.ToArray();
+
+                                Brep[] extrusion = Rhino.Geometry.Brep.CreateFromLoft(crvs, Point3d.Unset, Point3d.Unset, Rhino.Geometry.LoftType.Normal, false);
 
                                 //Join Extrusion and roof
                                 List<Brep> geos = new List<Brep>();
-                                //geos.Add(extrusion[0]); 
+                                geos.Add(extrusion[0]); 
                                 geos.Add(roofSrf);
-                                Brep joinedgeo = Rhino.Geometry.Brep.JoinBreps(geos, 0)[0];
+                                Brep joinedgeo = Rhino.Geometry.Brep.JoinBreps(geos, 0.001)[0];
 
-                                //b = joinedgeo.CapPlanarHoles(0.001);
-
-                                b = roofSrf.CapPlanarHoles(0.001);
+                                b = joinedgeo.CapPlanarHoles(0.001);
                             }
 
                         }

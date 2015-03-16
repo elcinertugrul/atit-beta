@@ -85,7 +85,7 @@ namespace atit.Helpers
         /// <param name="longitude"></param>
         /// <param name="easting"></param>
         /// <param name="northing"></param>
-        public static void ConvertToUtmString(double latitude, double longitude, ref double easting, ref double northing)
+        public static void ConvertToUtmString(double longitude, double latitude, ref double easting, ref double northing)
         {
             //if (latitude < -80 || latitude > 84)
                 // return null;
