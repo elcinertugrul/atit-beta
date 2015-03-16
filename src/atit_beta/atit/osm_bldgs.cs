@@ -31,7 +31,7 @@ namespace atit
         /// </summary>
         public osm_bldgs()
             : base("osm_bldgs", "Nickname",
-                "Import OSM Buildings",
+                "Imports & Draw OSM 3D Buildings",
                 "@it", "OSM")
         {
         }
