@@ -31,6 +31,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotSpatial.Controls">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Forms">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Projections.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Serialization">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Topology">
+      <HintPath>..\..\..\extrn\DotSpatial.1.7\DotSpatial.Topology.dll</HintPath>
+    </Reference>
     <Reference Include="GH_IO">
       <HintPath>..\..\..\..\..\..\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\GH_IO.dll</HintPath>
       <Private>False</Private>
@@ -71,13 +95,20 @@
     <Compile Include="GeoCoder_AddressParser.cs" />
     <Compile Include="GeoCoder_StreetView.cs" />
     <Compile Include="Helpers\Converter.cs" />
+    <Compile Include="Helpers\Curve.cs" />
     <Compile Include="Helpers\Geoclient.cs" />
     <Compile Include="Helpers\GeoCoder.cs" />
+    <Compile Include="Helpers\GIS.cs" />
     <Compile Include="Helpers\node.cs" />
     <Compile Include="Helpers\OSMbuilding.cs" />
+    <Compile Include="Helpers\Point.cs" />
+    <Compile Include="Helpers\ShapeItem.cs" />
     <Compile Include="Helpers\Statistic.cs" />
+    <Compile Include="NYC_BindShps.cs" />
+    <Compile Include="NYC_FootprintbyBorough.cs" />
     <Compile Include="nyc_geoclient_address.cs" />
     <Compile Include="nyc_geoclient_bin.cs" />
+    <Compile Include="NYC_VisualizeLinkedData.cs" />
     <Compile Include="osm_bldgInfo.cs" />
     <Compile Include="osm_bldgs.cs" />
     <Compile Include="osm_Trace.cs" />
@@ -87,6 +118,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ShapeItemGHData.cs" />
+    <Compile Include="shpatitinfo.cs" />
+    <Compile Include="SHP_ImportSHP.cs" />
+    <Compile Include="SHP_ReadAtt.cs" />
+    <Compile Include="SHP_VisualizeSHP.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

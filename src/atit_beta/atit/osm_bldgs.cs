@@ -269,7 +269,7 @@ namespace atit
                         //mypoints.RemoveAt(mypoints.Count - 1);
 
                         // Create GH_Curves
-                        Curve footprint = new PolylineCurve(mypoints).ToNurbsCurve();
+                        Rhino.Geometry.Curve footprint = new PolylineCurve(mypoints).ToNurbsCurve();
                         bool isclosed = footprint.IsClosed;
 
                         // get polygon profile + extrude 
@@ -277,7 +277,7 @@ namespace atit
                         {
                             // set upper curve
                             Vector3d topdir = new Vector3d(0, 0, bldg.features[0].properties.height * factor);
-                            Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
+                            Rhino.Geometry.Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
                             topCrv.Translate(topdir);
                             // set lower curve
                             double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
@@ -287,8 +287,8 @@ namespace atit
                                 footprint.Translate(bottomdir);
                             }
 
-                            List<Curve> crvslist = new List<Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
-                            Curve[] crvs = crvslist.ToArray();
+                            List<Rhino.Geometry.Curve> crvslist = new List<Rhino.Geometry.Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
+                            Rhino.Geometry.Curve[] crvs = crvslist.ToArray();
 
                             Brep[] extrusion = Rhino.Geometry.Brep.CreateFromLoft(crvs, Point3d.Unset, Point3d.Unset, Rhino.Geometry.LoftType.Normal, false);
 
@@ -317,7 +317,7 @@ namespace atit
                             //Create extrusion
                             // set upper curve
                             Vector3d topdir = new Vector3d(0, 0, bheight);
-                            Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
+                            Rhino.Geometry.Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
                             topCrv.Translate(topdir);
                             // set lower curve
                             double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
@@ -327,8 +327,8 @@ namespace atit
                                 footprint.Translate(bottomdir);
                             }
 
-                            List<Curve> crvslist = new List<Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
-                            Curve[] crvs = crvslist.ToArray();
+                            List<Rhino.Geometry.Curve> crvslist = new List<Rhino.Geometry.Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
+                            Rhino.Geometry.Curve[] crvs = crvslist.ToArray();
 
                             Brep[] extrusion = Rhino.Geometry.Brep.CreateFromLoft(crvs, Point3d.Unset, Point3d.Unset, Rhino.Geometry.LoftType.Normal, false);
 
@@ -349,12 +349,12 @@ namespace atit
                             {
                                 //create roof
                                 List<Point3d> list1 = new List<Point3d>(); list1.Add(mypoints[0]); list1.Add(mypoints[1]);
-                                Curve crv1 = new PolylineCurve(list1).ToNurbsCurve();
+                                Rhino.Geometry.Curve crv1 = new PolylineCurve(list1).ToNurbsCurve();
                                 Point3d mid0 = crv1.PointAt(0.5);
                                 mid0.Z = aheight;
 
                                 List<Point3d> list2 = new List<Point3d>(); list2.Add(mypoints[2]); list2.Add(mypoints[3]);
-                                Curve crv2 = new PolylineCurve(list2).ToNurbsCurve();
+                                Rhino.Geometry.Curve crv2 = new PolylineCurve(list2).ToNurbsCurve();
                                 Point3d mid1 = crv2.PointAt(0.5);
                                 mid1.Z = aheight;
 
@@ -366,7 +366,7 @@ namespace atit
                                 //Create extrusion
                                 // set upper curve
                                 Vector3d topdir = new Vector3d(0, 0, bheight);
-                                Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
+                                Rhino.Geometry.Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
                                 topCrv.Translate(topdir);
                                 // set lower curve
                                 double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
@@ -376,8 +376,8 @@ namespace atit
                                     footprint.Translate(bottomdir);
                                 }
 
-                                List<Curve> crvslist = new List<Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
-                                Curve[] crvs = crvslist.ToArray();
+                                List<Rhino.Geometry.Curve> crvslist = new List<Rhino.Geometry.Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
+                                Rhino.Geometry.Curve[] crvs = crvslist.ToArray();
 
                                 Brep[] extrusion = Rhino.Geometry.Brep.CreateFromLoft(crvs, Point3d.Unset, Point3d.Unset, Rhino.Geometry.LoftType.Normal, false);
 
@@ -408,7 +408,7 @@ namespace atit
                                 //Create extrusion
                                 // set upper curve
                                 Vector3d topdir = new Vector3d(0, 0, bheight);
-                                Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
+                                Rhino.Geometry.Curve topCrv = new PolylineCurve(mypoints).ToNurbsCurve();
                                 topCrv.Translate(topdir);
                                 // set lower curve
                                 double minH = bldg.features[0].properties.minHeight; //  bldg.features[0].properties.tags.min_height;
@@ -418,8 +418,8 @@ namespace atit
                                     footprint.Translate(bottomdir);
                                 }
 
-                                List<Curve> crvslist = new List<Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
-                                Curve[] crvs = crvslist.ToArray();
+                                List<Rhino.Geometry.Curve> crvslist = new List<Rhino.Geometry.Curve>(); crvslist.Add(footprint); crvslist.Add(topCrv);
+                                Rhino.Geometry.Curve[] crvs = crvslist.ToArray();
 
                                 Brep[] extrusion = Rhino.Geometry.Brep.CreateFromLoft(crvs, Point3d.Unset, Point3d.Unset, Rhino.Geometry.LoftType.Normal, false);
 
