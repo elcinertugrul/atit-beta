@@ -49,7 +49,7 @@ namespace atit.Helpers
         [JsonProperty("building:use")]
         public string buildinguse { get; set; }
         [JsonProperty("building:levels")]
-        public double buildinglevels { get; set; }
+        public string buildinglevels { get; set; }
         [JsonProperty("building:min_level")]
         public double buildingminlevel { get; set; }
 
