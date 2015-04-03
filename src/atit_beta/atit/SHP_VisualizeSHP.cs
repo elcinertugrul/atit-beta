@@ -129,22 +129,23 @@ namespace atit
                                                 mypoints.Add(new Point3d(pt.X, pt.Y, pt.Z));
                                             }
 
-                                            if (InShapes[i].Type == "Polygon")
+                                            if (InShapes[i].Type == "Polygon" || InShapes[i].Type.ToLower().Contains("polygon"))
                                             {
 
                                                 // Create GH-Curves
-                                                PolylineCurve mycurve = new PolylineCurve(mypoints);
+                                                //PolylineCurve mycurve = new PolylineCurve(mypoints);
+                                                Rhino.Geometry.Curve mycurve = new PolylineCurve(mypoints).ToNurbsCurve();
                                                 myoutcurves.Add(mycurve, myOutPath);
                                             }
 
-                                            if (InShapes[i].Type == "Point")
+                                            if (InShapes[i].Type == "Point" || InShapes[i].Type == "MultiPoint" || InShapes[i].Type.ToLower().Contains("point"))
                                             {
                                                 foreach (var point in mypoints)
                                                 {
                                                     myoutPts.Add(point, myOutPath);
                                                 }
                                             }
-                                            if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString")
+                                            if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString" || InShapes[i].Type.ToLower().Contains("line"))
                                             {
                                                 // Create GH-Curves
                                                 PolylineCurve mycurve = new PolylineCurve(mypoints);
