@@ -30,11 +30,7 @@ namespace atit.Helpers
 
         //Constructor
         public ShapeItem() { }
-        public ShapeItem(List<Point> Vrtx, Dictionary<string, string> attDict)
-        {
-            Pts = Vrtx;
-            AttsDict = attDict;      
-        }
+
 
         public ShapeItem(List<Point> Vrtx)
         {

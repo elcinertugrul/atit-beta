@@ -78,14 +78,9 @@ namespace atit
                 List<string[]> FPAtt = new List<string[]>();
 
                 // parse BBL of tax map here
-                string taxbbl = gis.Parse(InShapes_Tax[i].AttsDict["BBL"]);
-                if (taxbbl.Contains("e+"))
-                {
-                    double myfloat = Double.Parse(taxbbl, System.Globalization.NumberStyles.Float);
-                    int c = Convert.ToInt32(myfloat);
-                    taxbbl = c.ToString();
-                }
-
+                //string taxbbl = gis.Parse(InShapes_Tax[i].AttsDict["BBL"]);
+                string taxbbl = gis.combineBBL(InShapes_Tax[i].AttsDict["Borough"], InShapes_Tax[i].AttsDict["Block"], InShapes_Tax[i].AttsDict["Lot"]);
+               
                 // add dictionary
                 foreach (var item in InShapes_Tax[i].AttsDict)
                 {
@@ -104,14 +99,18 @@ namespace atit
                 }
 
                 // us linq inquiry 
-                var footp = from ft in InShapes_Foot
+                var footp = (from ft in InShapes_Foot
                              where ft.AttsDict["BBL"] == taxbbl
-                             select ft; // may be ,pre then one element
+                             select ft).ToList(); // may be ,pre then one element
 
                 foreach (var fp in footp)
                 {
                         // this add to footprints
-                        myfootprintcurves.Add(new Helpers.Curve(fp.Pts));
+                foreach (var points in fp.PtsLists)
+                    {
+                        myfootprintcurves.Add(new Helpers.Curve(points));
+                    }
+
                         string[] Att = new string[fp.AttsDict.Count];
 
                         int index = 0;

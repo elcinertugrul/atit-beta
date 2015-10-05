@@ -143,7 +143,16 @@ namespace atit
                 }
 
                 Color c = Color.White;
-                Brep outB = Get3Dbuilding(id, height, minheight, roofshape, roofheight, ref c);
+
+                string inUnits = Rhino.RhinoDoc.ActiveDoc.GetUnitSystemName(true, false, false, true);
+                if (inUnits.ToLower() == "millimeter" || inUnits.ToLower() == "mm") inUnits = "mm";
+                else if (inUnits.ToLower() == "meter" || inUnits.ToLower() == "m") inUnits = "m";
+                else if (inUnits.ToLower() == "inch" || inUnits.ToLower() == "inches" || inUnits.ToLower() == "in") inUnits = "in";
+                else if (inUnits.ToLower() == "foot" || inUnits.ToLower() == "feet" || inUnits.ToLower() == "ft") inUnits = "ft";
+
+                double factor = Helpers.Converter.defineConversion(inUnits, "m"); // test it out
+
+                Brep outB = Get3Dbuilding(id, height, minheight, roofshape, roofheight, ref c, factor);
 
                 if (outB != null)
                 {
@@ -223,7 +232,7 @@ namespace atit
             return response;
         }
 
-        public static Brep Get3Dbuilding(string id, double osm_height, double osm_minheight, string roofshape, double roofheight, ref Color c)
+        public static Brep Get3Dbuilding(string id, double osm_height, double osm_minheight, string roofshape, double roofheight, ref Color c , double factor)
         {
 
             Brep b = null;
@@ -233,13 +242,6 @@ namespace atit
 
             OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
             // http://data.osmbuildings.org/0.2/rkc8ywdl/feature/248143998.json
-            string inUnits = Rhino.RhinoDoc.ActiveDoc.GetUnitSystemName(true, false, false, true);
-            if (inUnits.ToLower() == "millimeter" || inUnits.ToLower() == "mm") inUnits = "mm";
-            else if (inUnits.ToLower() == "meter" || inUnits.ToLower() == "m") inUnits = "m";
-            else if (inUnits.ToLower() == "inch" || inUnits.ToLower() == "inches" || inUnits.ToLower() == "in") inUnits = "in";
-            else if (inUnits.ToLower() == "foot" || inUnits.ToLower() == "feet" || inUnits.ToLower() == "ft") inUnits = "ft";
-
-            double factor = Helpers.Converter.defineConversion("m", inUnits);
 
 
             if (bldg.features.Length > 0)
@@ -247,7 +249,7 @@ namespace atit
                 // Create Brep
                 foreach (var feat in bldg.features)
                 {
-                    if (bldg.features[0].geometry.type == "Polygon" && bldg.features[0].properties.tags.height != 0)
+                    if (bldg.features[0].geometry.type == "Polygon" && bldg.features[0].properties.height != 0)
                     {
                         // Color 
                         if (bldg.features[0].properties.color != null)

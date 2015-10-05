@@ -134,7 +134,7 @@ namespace atit
 
                                                 // Create GH-Curves
                                                 //PolylineCurve mycurve = new PolylineCurve(mypoints);
-                                                Rhino.Geometry.Curve mycurve = new PolylineCurve(mypoints).ToNurbsCurve();
+                                                Rhino.Geometry.Curve mycurve = new PolylineCurve(mypoints);
                                                 myoutcurves.Add(mycurve, myOutPath);
                                             }
 

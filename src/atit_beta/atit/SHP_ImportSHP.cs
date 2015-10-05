@@ -17,7 +17,7 @@ namespace atit
         /// </summary>
         public SHP_ImportSHP()
             : base("Imp@It", "Imp@It",
-                "Import and store shapes as system objects",
+                "Import and store shapes",
                 "@it", "SHP")
         {
         }
