@@ -129,7 +129,7 @@ namespace atit
                                                 mypoints.Add(new Point3d(pt.X, pt.Y, pt.Z));
                                             }
 
-                                            if (InShapes[i].Type == "Polygon" || InShapes[i].Type.ToLower().Contains("polygon"))
+                                            if (InShapes[i].Type == "Polygon" || InShapes[i].Type == "MultiPolygon" || InShapes[i].Type.ToLower().Contains("polygon"))
                                             {
 
                                                 // Create GH-Curves
