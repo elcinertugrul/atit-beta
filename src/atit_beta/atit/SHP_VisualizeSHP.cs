@@ -138,19 +138,27 @@ namespace atit
                                                 myoutcurves.Add(mycurve, myOutPath);
                                             }
 
-                                            if (InShapes[i].Type == "Point" || InShapes[i].Type == "MultiPoint" || InShapes[i].Type.ToLower().Contains("point"))
+                                            else if (InShapes[i].Type == "Point" || InShapes[i].Type == "MultiPoint" || InShapes[i].Type.ToLower().Contains("point"))
                                             {
                                                 foreach (var point in mypoints)
                                                 {
                                                     myoutPts.Add(point, myOutPath);
                                                 }
                                             }
-                                            if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString" || InShapes[i].Type.ToLower().Contains("line"))
+                                            else if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString" || InShapes[i].Type.ToLower().Contains("line"))
                                             {
                                                 // Create GH-Curves
                                                 PolylineCurve mycurve = new PolylineCurve(mypoints);
                                                 myoutPolys.Add(mycurve, myOutPath);
                                             }
+                                            else
+                                            {
+                                                foreach (var point in mypoints)
+                                                {
+                                                    myoutPts.Add(point, myOutPath);
+                                                }
+                                            }
+                                            
                                         }
                                     }
                                     else 
@@ -161,25 +169,32 @@ namespace atit
                                             List<Point3d> mypoints = new List<Point3d>();
                                             mypoints.Add(new Point3d(pt.X, pt.Y, pt.Z));
 
-                                            if (InShapes[i].Type == "Polygon")
+                                            if (InShapes[i].Type == "Polygon" || InShapes[i].Type == "MultiPolygon" || InShapes[i].Type.ToLower().Contains("polygon"))
                                             {
                                                 // Create GH-Curves
                                                 PolylineCurve mycurve = new PolylineCurve(mypoints);
                                                 myoutcurves.Add(mycurve, myOutPath);
                                             }
 
-                                            if (InShapes[i].Type == "Point")
+                                            else if (InShapes[i].Type == "Point" || InShapes[i].Type == "MultiPoint" || InShapes[i].Type.ToLower().Contains("point"))
                                             {
                                                 foreach (var point in mypoints)
                                                 {
                                                     myoutPts.Add(point, myOutPath);
                                                 }
                                             }
-                                            if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString")
+                                            else if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString" || InShapes[i].Type.ToLower().Contains("line"))
                                             {
                                                 // Create GH-Curves
                                                 PolylineCurve mycurve = new PolylineCurve(mypoints);
                                                 myoutPolys.Add(mycurve, myOutPath);
+                                            }
+                                            else
+                                            {
+                                                foreach (var point in mypoints)
+                                                {
+                                                    myoutPts.Add(point, myOutPath);
+                                                }
                                             }
                                         }
                                     }
@@ -233,25 +248,32 @@ namespace atit
                                 mypoints.Add(new Point3d(pt.X, pt.Y, pt.Z));
                             }
 
-                            if (InShapes[i].Type == "Polygon")
+                            if (InShapes[i].Type == "Polygon" || InShapes[i].Type == "MultiPolygon" || InShapes[i].Type.ToLower().Contains("polygon"))
                             {
                                 // Create GH-Curves
                                 PolylineCurve mycurve = new PolylineCurve(mypoints);
                                 myoutcurves.Add(mycurve, myOutPath);
                             }
 
-                            if (InShapes[i].Type == "Point")
+                            else if (InShapes[i].Type == "Point" || InShapes[i].Type == "MultiPoint" || InShapes[i].Type.ToLower().Contains("point"))
                             {
                                 foreach (var point in mypoints)
                                 {
                                     myoutPts.Add(point, myOutPath);
                                 }
                             }
-                            if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString")
+                            else if (InShapes[i].Type == "Polyline" || InShapes[i].Type == "LineString" || InShapes[i].Type.ToLower().Contains("line"))
                             {
                                 // Create GH-Curves
                                 PolylineCurve mycurve = new PolylineCurve(mypoints);
                                 myoutPolys.Add(mycurve, myOutPath);
+                            }
+                            else
+                            {
+                                foreach (var point in mypoints)
+                                {
+                                    myoutPts.Add(point, myOutPath);
+                                }
                             }
                         }
 

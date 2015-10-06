@@ -177,60 +177,83 @@ namespace atit.Helpers
                 IFeature feature = FS.GetFeature(i);
                 string type = feature.BasicGeometry.GeometryType;
                 int Numofgeo = feature.NumGeometries;
+                int numofparts = feature.ShapeIndex.NumParts;
 
-                
-                for (int n = 0; n < Numofgeo; n++)
+                for (int k = 0; k < numofparts; k++)
                 {
-                    if (n == 2)
-                    {
-                        int a = 2; 
-                    }
                     List<Point> myPoints = new List<Point>();
-                    IList<Coordinate> coords = feature.BasicGeometry.GetBasicGeometryN(n).Coordinates;
-                    //List<Coordinate> coords = feature.Coordinates[n];
-                    Shape s = FS.GetShape(i, true);
-
-                    //populate myPoints
-                    foreach (var c in coords)
+                    PartRange range = feature.ShapeIndex.Parts[k];                   
+                    foreach (Vertex v in range)
                     {
                         if (IsReProject)
                         {
                             double[] xy = new double[2];
                             double[] z = new double[1];
 
-                            xy[0] = c.X; // long is X
-                            xy[1] = c.Y; // lat is Y  
+                            xy[0] = v.X; // long is X
+                            xy[1] = v.Y; // lat is Y  
 
-                            if (c.Z.ToString() != "NaN")
-                            {
-                                z[0] = c.Z;
-                                Reproject.ReprojectPoints(xy, z, source, dest, 0, 1);
-                                myPoints.Add(new Point(xy[0], xy[1], z[0]));
-                            }
-                            else
-                            {
-                                Reproject.ReprojectPoints(xy, null, source, dest, 0, 1);
-                                myPoints.Add(new Point(xy[0], xy[1], 0));
-                            }
+                            Reproject.ReprojectPoints(xy, null, source, dest, 0, 1);
+                            myPoints.Add(new Point(xy[0], xy[1], 0));
+                           
                         }
                         else // dont reproject
                         {
-
-                            if (c.Z.ToString() != "NaN")
-                            {
-                                myPoints.Add(new Point(c.X, c.Y, c.Z));
-                            }
-                            else
-                            {
-                                myPoints.Add(new Point(c.X, c.Y, 0));
-                            }
-                        
+                          myPoints.Add(new Point(v.X, v.Y, 0));
                         }
-
                     }
-
                     PointsList.Add(myPoints);
                 }
+
+                //for (int n = 0; n < Numofgeo; n++)
+                //{
+
+                //    List<Point> myPoints = new List<Point>();
+                //    IList<Coordinate> coords = feature.BasicGeometry.GetBasicGeometryN(n).Coordinates;
+                //    //List<Coordinate> coords = feature.Coordinates[n];
+                //    Shape s = FS.GetShape(i, true);
+
+                //    //populate myPoints
+                //    foreach (var c in coords)
+                //    {
+                //        if (IsReProject)
+                //        {
+                //            double[] xy = new double[2];
+                //            double[] z = new double[1];
+
+                //            xy[0] = c.X; // long is X
+                //            xy[1] = c.Y; // lat is Y  
+
+                //            if (c.Z.ToString() != "NaN")
+                //            {
+                //                z[0] = c.Z;
+                //                Reproject.ReprojectPoints(xy, z, source, dest, 0, 1);
+                //                myPoints.Add(new Point(xy[0], xy[1], z[0]));
+                //            }
+                //            else
+                //            {
+                //                Reproject.ReprojectPoints(xy, null, source, dest, 0, 1);
+                //                myPoints.Add(new Point(xy[0], xy[1], 0));
+                //            }
+                //        }
+                //        else // dont reproject
+                //        {
+
+                //            if (c.Z.ToString() != "NaN")
+                //            {
+                //                myPoints.Add(new Point(c.X, c.Y, c.Z));
+                //            }
+                //            else
+                //            {
+                //                myPoints.Add(new Point(c.X, c.Y, 0));
+                //            }
+                        
+                //        }
+
+                //    }
+
+                //    PointsList.Add(myPoints);
+                //}
 
                 //populate attributes
                 for (int j = 0; j < AttNames.Count; j++)
@@ -697,28 +720,40 @@ namespace atit.Helpers
                         IFeature feature = FS.GetFeature(i);
                         string type =  feature.BasicGeometry.GeometryType;
                         int Numofgeo = feature.NumGeometries;
-                        
-                        //IList<Coordinate> coords = feature.BasicGeometry.Coordinates;
 
-                        for (int n = 0; n < Numofgeo; n++)
+                        int numofparts = feature.ShapeIndex.NumParts;
+
+                        for (int k = 0; k < numofparts; k++)
                         {
-                            //populate myPoints
                             List<Point> myPoints = new List<Point>();
-                            IList<Coordinate> coords = feature.BasicGeometry.GetBasicGeometryN(n).Coordinates;
-                            foreach (var c in coords)
+                            PartRange range = feature.ShapeIndex.Parts[k];
+                            foreach (Vertex v in range)
                             {
-                                if (c.Z.ToString() != "NaN")
-                                {
-                                    myPoints.Add(new Point(c.X, c.Y, c.Z));
-                                }
-                                else
-                                {
-                                    myPoints.Add(new Point(c.X, c.Y, 0));
-                                }
+                              myPoints.Add(new Point(v.X, v.Y, 0));
                             }
-
                             PointsList.Add(myPoints);
                         }
+                        
+
+                        //for (int n = 0; n < Numofgeo; n++)
+                        //{
+                        //    //populate myPoints
+                        //    List<Point> myPoints = new List<Point>();
+                        //    IList<Coordinate> coords = feature.BasicGeometry.GetBasicGeometryN(n).Coordinates;
+                        //    foreach (var c in coords)
+                        //    {
+                        //        if (c.Z.ToString() != "NaN")
+                        //        {
+                        //            myPoints.Add(new Point(c.X, c.Y, c.Z));
+                        //        }
+                        //        else
+                        //        {
+                        //            myPoints.Add(new Point(c.X, c.Y, 0));
+                        //        }
+                        //    }
+
+                        //    PointsList.Add(myPoints);
+                        //}
 
 
                         //populate attributes
