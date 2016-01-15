@@ -82,6 +82,10 @@ namespace atit
             string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
             string response2 = osm_bldgs.GetResponse(url);
 
+            if (response2 == null)
+            {
+                return;
+            }
             OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
 
             DA.SetData(0, bldg.features[0].properties.tags.name);

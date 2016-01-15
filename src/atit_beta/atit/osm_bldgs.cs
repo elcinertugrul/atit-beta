@@ -240,6 +240,11 @@ namespace atit
             string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
             string response2 = GetResponse(url);
 
+            if (response2 == null)
+            {
+                return b;
+            }
+
             OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
             // http://data.osmbuildings.org/0.2/rkc8ywdl/feature/248143998.json
 

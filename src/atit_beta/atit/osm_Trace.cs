@@ -119,7 +119,7 @@ namespace atit
             else if (inUnits.ToLower() == "inch" || inUnits.ToLower() == "inches" || inUnits.ToLower() == "in") inUnits = "in";
             else if (inUnits.ToLower() == "foot" || inUnits.ToLower() == "feet" || inUnits.ToLower() == "ft") inUnits = "ft";
 
-            double factor = Helpers.Converter.defineConversion("m", inUnits);
+            double factor = Helpers.Converter.defineConversion(inUnits,"m");
             if (!isUTMProjected)
             {
                 factor = 1; // WGS84 or lat/long 
