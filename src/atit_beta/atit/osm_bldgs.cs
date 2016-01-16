@@ -46,7 +46,10 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Latitude,Longitude", "LL", "{latitude,longitude}", GH_ParamAccess.item);
+            pManager.AddTextParameter("Location", "LL", "{latitude,longitude}", GH_ParamAccess.item);
+            pManager[0].Optional = true;
+            pManager.AddTextParameter(".osm File Path", "C:/", "Specify path of the .osm file [optional]", GH_ParamAccess.item);
+            pManager[1].Optional = true;
             pManager.AddNumberParameter("Lat_Range", "lat_r", "Latitude Range", GH_ParamAccess.item, 100);
             pManager.AddNumberParameter("Long_Range", "lon_r", "Longitude Range", GH_ParamAccess.item, 100);
         }
@@ -67,13 +70,21 @@ namespace atit
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            string filepath = string.Empty;
             double x_range = 100;
             double y_range = 100;
-            string Location = string.Empty; // defense for LL
+            string Location = string.Empty; 
 
-            if (!DA.GetData(0, ref Location)) { return; }
-            if (!DA.GetData(1, ref x_range)) { }
-            if (!DA.GetData(2, ref y_range)) { }
+            if (!DA.GetData(0, ref Location)) { }
+            if (!DA.GetData(1, ref filepath)) { }
+            if (!DA.GetData(2, ref x_range)) { }
+            if (!DA.GetData(3, ref y_range)) { }
+
+            // defense for ll and filepath
+            if (string.IsNullOrEmpty(filepath) && string.IsNullOrEmpty(Location))
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input either Location (LL) or .osm File Path!");
+            }
 
             double x = x_range * Math.Pow(10, -5);
             double y = y_range * Math.Pow(10, -5);
@@ -82,27 +93,40 @@ namespace atit
             List<Brep> out_Geometry = new List<Brep>();
             List<Color> out_Colors = new List<Color>();
 
-            // Construct url = (min long, min lat, max long, max lat)
-            string[] words = Location.Split(',');
-            double lat = 0;
-            double lon = 0;
-            Double.TryParse(words[0], out lat);
-            Double.TryParse(words[1], out lon);
-
-            string minlong = (lon - x).ToString();
-            string maxlog = (lon + x).ToString();
-            string minlat = (lat - y).ToString();
-            string maxlat = (lat + y).ToString();
-
-           string url = "http://api.openstreetmap.org/api/0.6/map?bbox="+ minlong + "," + minlat + "," +  maxlog + "," + maxlat;
-            // string url = "http://api.openstreetmap.org/api/0.6/map?bbox=-73.9930835,40.7338633,-73.9890835,40.7378633";
-            //"https://api.openstreetmap.org/api/0.6/map?bbox=-73.9915635,40.7380371,-73.9835635,40.7460371";
-
-            string response = GetResponse(url);
-
             //// parse xml response
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(response);
+
+            if (!string.IsNullOrEmpty(filepath))
+            {
+                if (Path.GetExtension(filepath).ToLower() != ".osm")
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "file type must be '.osm' !");
+                    return;
+                }
+                doc.Load(filepath);
+            }
+            else if (!string.IsNullOrEmpty(Location))
+            {
+                // Construct url = (min long, min lat, max long, max lat)
+                string[] words = Location.Split(',');
+                double lat = 0;
+                double lon = 0;
+                Double.TryParse(words[0], out lat);
+                Double.TryParse(words[1], out lon);
+
+                string minlong = (lon - x).ToString();
+                string maxlog = (lon + x).ToString();
+                string minlat = (lat - y).ToString();
+                string maxlat = (lat + y).ToString();
+
+                string url = "http://api.openstreetmap.org/api/0.6/map?bbox=" + minlong + "," + minlat + "," + maxlog + "," + maxlat;
+                // string url = "http://api.openstreetmap.org/api/0.6/map?bbox=-73.9930835,40.7338633,-73.9890835,40.7378633";
+                //"https://api.openstreetmap.org/api/0.6/map?bbox=-73.9915635,40.7380371,-73.9835635,40.7460371";
+
+                string response = GetResponse(url);
+
+                doc.LoadXml(response);
+            }  
 
             //// get all the data for ways
             XmlNodeList wayData = doc.GetElementsByTagName("way");
