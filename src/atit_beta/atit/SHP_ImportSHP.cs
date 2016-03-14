@@ -7,6 +7,7 @@ using Rhino.Geometry;
 
 using atit.Helpers;
 using atit.Properties;
+using System.Net;
 
 namespace atit
 {
@@ -67,6 +68,7 @@ namespace atit
             if (!DA.GetData(1, ref reproject)) { return; }
             if (!DA.GetData(2, ref trigger)) { return; }
 
+            //
             string extention = Path.GetExtension(filepath);
             if (extention != ".shp")
             {

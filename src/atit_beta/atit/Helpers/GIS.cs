@@ -149,7 +149,6 @@ namespace atit.Helpers
 
         public void GetShapes(bool IsReProject)
         {
-            //DotSpatial.Data.ShapefileReader reader = new DotSpatial.Data.ShapefileReader(FilePath);
             DataTable dt = null;
             IFeatureSet FS = FeatureSet.Open(FilePath);
             FS.FillAttributes();

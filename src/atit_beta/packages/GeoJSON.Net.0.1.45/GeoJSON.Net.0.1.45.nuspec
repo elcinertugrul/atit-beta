@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>GeoJSON.Net</id>
+    <version>0.1.45</version>
+    <authors>Joerg Battermann</authors>
+    <owners>Joerg Battermann</owners>
+    <licenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</description>
+    <releaseNotes>Downgraded Json.Net to earliest compatible version (7.0.1).</releaseNotes>
+    <language>en-US</language>
+    <tags>geojson geo json geolocation</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="7.0.1" />
+    </dependencies>
+  </metadata>
+</package>

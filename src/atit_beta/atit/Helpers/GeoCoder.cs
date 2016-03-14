@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 using System.Net;
 using System.Xml.Linq;
 using Newtonsoft.Json; // http://json.codeplex.com/
@@ -65,6 +65,7 @@ namespace atit.Helpers
             //http://stackoverflow.com/questions/16274508/how-to-call-google-geocode-service-from-c-sharp-code
             string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=false"; // + country zip code
             WebRequest request = WebRequest.Create(url);
+            request.Timeout = 24000;
             WebResponse myresponse = request.GetResponse();
 
             var result = new System.Net.WebClient().DownloadString(url);

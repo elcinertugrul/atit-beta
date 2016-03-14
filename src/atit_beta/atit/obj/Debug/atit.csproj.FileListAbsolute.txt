@@ -152,3 +152,10 @@ C:\Users\eertugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\zh-CN\DotSp
 C:\Users\eertugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\zh-CN\DotSpatial.Modeling.Forms.resources.dll
 C:\Users\eertugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\zh-MO\DotSpatial.Modeling.Forms.resources.dll
 C:\Users\eertugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.dll
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\RhinoCommon.dll
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\RhinoCommon.xml
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csprojResolveAssemblyReference.cache
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\GeoJSON.Net.dll
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.Json.dll
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\GeoJSON.Net.xml
+C:\Users\ELCIN\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.Json.xml
