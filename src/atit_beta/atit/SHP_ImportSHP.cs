@@ -84,10 +84,14 @@ namespace atit
 
                 //populate attnames list
                 //myattnames = gisfile.GetAtt(filepath); // IT AGAIN READ ALL DATA ??? FIND BETTER WAY
-                foreach (var att in gisfile.Shapes[1].AttsDict)
+                if (gisfile.Shapes.Count > 0)
                 {
-                    myattnames.Add(att.Key);
+                    foreach (var att in gisfile.Shapes[0].AttsDict)
+                    {
+                        myattnames.Add(att.Key);
+                    }
                 }
+
             }
 
             // set Outputs

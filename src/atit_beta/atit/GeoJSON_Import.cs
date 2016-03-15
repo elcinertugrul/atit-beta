@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using System.Net;
-using GeoJSON;
-using GeoJSON.Net;
-using GeoJSON.Net.Converters;
+//using GeoJSON;
+//using GeoJSON.Net;
+//using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
 using System.IO;
 
