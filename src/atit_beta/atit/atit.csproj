@@ -108,6 +108,7 @@
     <Compile Include="Helpers\GIS.cs" />
     <Compile Include="Helpers\node.cs" />
     <Compile Include="Helpers\OSMbuilding.cs" />
+    <Compile Include="Helpers\OverpassAPIResponse.cs" />
     <Compile Include="Helpers\Point.cs" />
     <Compile Include="Helpers\ShapeItem.cs" />
     <Compile Include="Helpers\Statistic.cs" />

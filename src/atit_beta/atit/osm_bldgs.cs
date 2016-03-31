@@ -261,7 +261,8 @@ namespace atit
 
             Brep b = null;
 
-            string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
+            string url = "http://overpass-api.de/api/interpreter?data=[out:json];way("+ id +");out";
+            //string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
             string response2 = GetResponse(url);
 
             if (response2 == null)
@@ -270,6 +271,8 @@ namespace atit
             }
 
             OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
+            OverpassAPIResponse obj = JsonConvert.DeserializeObject<OverpassAPIResponse>(response2);
+            
             // http://data.osmbuildings.org/0.2/rkc8ywdl/feature/248143998.json
 
 
