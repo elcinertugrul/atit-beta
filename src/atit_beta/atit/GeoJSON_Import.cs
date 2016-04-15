@@ -31,7 +31,10 @@ namespace atit
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Shapefile (.shp) Path", "C:/", "Specify path of the geoJSON file", GH_ParamAccess.item);
+            pManager.AddTextParameter("GeoJson (.json) Path", "C:/", "Specify path of the geoJSON file", GH_ParamAccess.item);
+            pManager[0].Optional = true;
+            pManager.AddTextParameter("GeoJson (.json) url", "url", "Specify url of the geoJSON", GH_ParamAccess.item);
+            pManager[1].Optional = true;
             pManager.AddBooleanParameter("True or False", "T||F", "Set Boolean True to import geoJSON files", GH_ParamAccess.item);
             pManager[1].Optional = false;
         }
