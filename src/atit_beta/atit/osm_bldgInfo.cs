@@ -63,7 +63,7 @@ namespace atit
             pManager.AddNumberParameter("roof:angle", "roof:angle", "roof:angle", GH_ParamAccess.item);
             pManager.AddTextParameter("roof:material", "roof:material", "roof:material", GH_ParamAccess.item);
             pManager.AddColourParameter("roof:color", "roof:color", "roof:color", GH_ParamAccess.item);
-            //pManager.AddTextParameter("geoJson", "geoJson", "geoJson", GH_ParamAccess.item);
+            pManager.AddTextParameter("geoJson", "geoJson", "geoJson", GH_ParamAccess.item);
            
         }
 
@@ -79,56 +79,94 @@ namespace atit
 
             string out_json = string.Empty;
 
-            string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
+            //string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
+            string url = "http://overpass-api.de/api/interpreter?data=[out:json];(way("+ id +");node(w));out;";
             string response2 = osm_bldgs.GetResponse(url);
 
             if (response2 == null)
             {
                 return;
             }
-            OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
+            //OSMbuilding bldg = JsonConvert.DeserializeObject<OSMbuilding>(response2);
+            OverpassAPIResponse obj = JsonConvert.DeserializeObject<OverpassAPIResponse>(response2);
 
-            DA.SetData(0, bldg.features[0].properties.tags.name);
-            DA.SetData(1, bldg.features[0].properties.tags.building);
-            DA.SetData(2, bldg.features[0].properties.tags.buildingpart);
-            DA.SetData(3, bldg.features[0].properties.tags.buildinguse);
-            DA.SetData(4, bldg.features[0].properties.tags.buildinglevels);
-            DA.SetData(5, bldg.features[0].properties.tags.buildingminlevel);
-            DA.SetData(6, bldg.features[0].properties.tags.buildingmaterial);            
-            // Color 
-            Color c = Color.White;
-            if (bldg.features[0].properties.tags.buildingcolor != null)
+            //DA.SetData(0, bldg.features[0].properties.tags.name);
+            //DA.SetData(1, bldg.features[0].properties.tags.building);
+            //DA.SetData(2, bldg.features[0].properties.tags.buildingpart);
+            //DA.SetData(3, bldg.features[0].properties.tags.buildinguse);
+            //DA.SetData(4, bldg.features[0].properties.tags.buildinglevels);
+            //DA.SetData(5, bldg.features[0].properties.tags.buildingminlevel);
+            //DA.SetData(6, bldg.features[0].properties.tags.buildingmaterial);            
+            //// Color 
+            //Color c = Color.White;
+            //if (bldg.features[0].properties.tags.buildingcolor != null)
+            //{
+            //    c = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.tags.buildingcolor);
+            //    DA.SetData(7, c);
+            //}
+            //else if (bldg.features[0].properties.color != null)
+            //{
+            //    c = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.color);
+            //    DA.SetData(7, c);
+            //}
+
+            //DA.SetData(8, bldg.features[0].properties.tags.height);
+            //DA.SetData(9, bldg.features[0].properties.tags.min_height);
+
+            //DA.SetData(10, bldg.features[0].properties.tags.roofheight);
+            //DA.SetData(11, bldg.features[0].properties.tags.roofshape);
+            //DA.SetData(12, bldg.features[0].properties.tags.rooforientation);
+            //DA.SetData(13, bldg.features[0].properties.tags.roofangle);
+            //DA.SetData(14, bldg.features[0].properties.tags.roofmaterial);
+            //Color rc= Color.White;
+            //if (bldg.features[0].properties.tags.roofcolor != null)
+            //{
+            //    rc = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.tags.roofcolor);
+            //    DA.SetData(15, rc);
+            //}
+            //else if (bldg.features[0].properties.roofColor != null)
+            //{
+            //    rc = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.roofColor);
+            //    DA.SetData(15, rc);
+            //}
+
+            foreach (var el in obj.elements)
             {
-                c = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.tags.buildingcolor);
-                DA.SetData(7, c);
-            }
-            else if (bldg.features[0].properties.color != null)
-            {
-                c = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.color);
-                DA.SetData(7, c);
+                if (el.type =="way")
+                {
+                    DA.SetData(0, el.tags.name);
+                    DA.SetData(1, el.tags.building);
+                    DA.SetData(2, el.tags.buildingpart);
+                    DA.SetData(3, el.tags.buildinguse);
+                    DA.SetData(4, el.tags.buildinglevels);
+                    DA.SetData(5, el.tags.buildingminlevel);
+                    DA.SetData(6, el.tags.buildingmaterial);
+                    // Color 
+                    Color c = Color.White;
+                    if (el.tags.buildingcolor != null)
+                    {
+                        c = System.Drawing.ColorTranslator.FromHtml(el.tags.buildingcolor);
+                        DA.SetData(7, c);
+                    }
+
+                    DA.SetData(8, el.tags.height);
+                    DA.SetData(9, el.tags.min_height);
+
+                    DA.SetData(10, el.tags.roofheight);
+                    DA.SetData(11, el.tags.roofshape);
+                    DA.SetData(12, el.tags.rooforientation);
+                    DA.SetData(13, el.tags.roofangle);
+                    DA.SetData(14, el.tags.roofmaterial);
+                    Color rc = Color.White;
+                    if (el.tags.roofcolor != null)
+                    {
+                        rc = System.Drawing.ColorTranslator.FromHtml(el.tags.roofcolor);
+                        DA.SetData(15, rc);
+                    }
+                    DA.SetData(16, response2);
+                }
             }
 
-            DA.SetData(8, bldg.features[0].properties.tags.height);
-            DA.SetData(9, bldg.features[0].properties.tags.min_height);
-
-            DA.SetData(10, bldg.features[0].properties.tags.roofheight);
-            DA.SetData(11, bldg.features[0].properties.tags.roofshape);
-            DA.SetData(12, bldg.features[0].properties.tags.rooforientation);
-            DA.SetData(13, bldg.features[0].properties.tags.roofangle);
-            DA.SetData(14, bldg.features[0].properties.tags.roofmaterial);
-            Color rc= Color.White;
-            if (bldg.features[0].properties.tags.roofcolor != null)
-            {
-                rc = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.tags.roofcolor);
-                DA.SetData(15, rc);
-            }
-            else if (bldg.features[0].properties.roofColor != null)
-            {
-                rc = System.Drawing.ColorTranslator.FromHtml(bldg.features[0].properties.roofColor);
-                DA.SetData(15, rc);
-            }
-
-            //DA.SetData(16, response2);
         }
 
         /// <summary>
