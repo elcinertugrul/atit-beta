@@ -29,6 +29,9 @@ namespace atit.Helpers
         public string GeoType = string.Empty;
         public string ProjType = string.Empty;
 
+        private DataTable dt = null;
+        private IFeatureSet FS = null;
+
         //METHODS
 
         /// <summary>
@@ -45,11 +48,6 @@ namespace atit.Helpers
             dt = FS.DataTable;
             ProjType = FS.Projection.ToString();
 
-            // get the column Name 
-            foreach (DataColumn column in dt.Columns)
-            {
-                attnames.Add(column.ColumnName);
-            }
             try
             {
                 IFeature feature = FS.GetFeature(1);
@@ -61,22 +59,25 @@ namespace atit.Helpers
             }
             return attnames;
         }
+        
+        public void ReadData()
+        {
+            FS = FeatureSet.Open(FilePath);
+
+            dt = FS.DataTable;
+
+            foreach (DataColumn column in dt.Columns)
+            {
+                AttNames.Add(column.ColumnName);
+            }
+        }
+        
         /// <summary>
         /// Populate all shapeitems from shp file
         /// </summary>
         public void GetShapes()
         {
             //DotSpatial.Data.ShapefileReader reader = new DotSpatial.Data.ShapefileReader(FilePath);
-            DataTable dt = null;
-            IFeatureSet FS = FeatureSet.Open(FilePath);
-            FS.FillAttributes();
-            dt = FS.DataTable;
-
-            // get the column Name 
-                foreach ( DataColumn column in dt.Columns)
-                {
-                    AttNames.Add(column.ColumnName);
-                }
 
             // this able to get spricif 
             //if (dt.Rows.Count > 0)
@@ -89,7 +90,6 @@ namespace atit.Helpers
                 //local variables
                 //List<Point> myPoints = new List<Point>();
                 List<List<Point>> PointsList = new List<List<Point>>();
-                Dictionary<string, string> myAttsDict = new Dictionary<string, string>();
 
                 
                 // populate vertices
@@ -123,10 +123,7 @@ namespace atit.Helpers
                 }
 
                 //populate attributes
-                for (int j = 0; j < AttNames.Count; j++)
-                {
-                    myAttsDict.Add(AttNames[j],dt.Rows[i][AttNames[j]].ToString());
-                }
+                Dictionary<string, string> myAttsDict = getAttributesDictionary(i);
 
                 // populate shapeitems
                 //Shapes.Add(new ShapeItem(myPoints,myAttsDict));
@@ -149,28 +146,16 @@ namespace atit.Helpers
 
         public void GetShapes(bool IsReProject)
         {
-            DataTable dt = null;
-            IFeatureSet FS = FeatureSet.Open(FilePath);
-            FS.FillAttributes();
-            dt = FS.DataTable;
 
             // Projections
             ProjectionInfo source = FS.Projection;
             ProjectionInfo dest = ProjectionInfo.FromProj4String("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"); //WGS84
-
-            // get the column Name 
-            foreach (DataColumn column in dt.Columns)
-            {
-                AttNames.Add(column.ColumnName);
-            }
 
             for (int i = 0; i < FS.Features.Count; i++)
             {
                 //local variables
                 //List<Point> myPoints = new List<Point>();
                 List<List<Point>> PointsList = new List<List<Point>>();
-                Dictionary<string, string> myAttsDict = new Dictionary<string, string>();
-
 
                 // populate vertices
                 IFeature feature = FS.GetFeature(i);
@@ -246,7 +231,7 @@ namespace atit.Helpers
                 //            {
                 //                myPoints.Add(new Point(c.X, c.Y, 0));
                 //            }
-                        
+
                 //        }
 
                 //    }
@@ -255,10 +240,7 @@ namespace atit.Helpers
                 //}
 
                 //populate attributes
-                for (int j = 0; j < AttNames.Count; j++)
-                {
-                    myAttsDict.Add(AttNames[j], dt.Rows[i][AttNames[j]].ToString());
-                }
+                Dictionary<string, string> myAttsDict = getAttributesDictionary(i);
 
                 // populate shapeitems
                 Shapes.Add(new ShapeItem(type, PointsList, myAttsDict));
@@ -270,16 +252,6 @@ namespace atit.Helpers
         {
             List<ShapeItem> myshapes = new List<ShapeItem>();
             //DotSpatial.Data.ShapefileReader reader = new DotSpatial.Data.ShapefileReader(FilePath);
-            DataTable dt = null;
-            IFeatureSet FS = FeatureSet.Open(path);
-            FS.FillAttributes();
-            dt = FS.DataTable;
-
-            // //get the column Name 
-            //foreach (DataColumn column in dt.Columns)
-            //{
-            //    AttNames.Add(column.ColumnName);
-            //}
 
             // //this able to get spricif 
             //if (dt.Rows.Count > 0)
@@ -295,7 +267,6 @@ namespace atit.Helpers
                     //local variables
                     //List<Point> myPoints = new List<Point>();
                     List<List<Point>> PointsList = new List<List<Point>>();
-                    Dictionary<string, string> myAttsDict = new Dictionary<string, string>();
 
                     // populate vertices
                     IFeature feature = FS.GetFeature(i);
@@ -330,6 +301,7 @@ namespace atit.Helpers
                     //populate attributes
                     //for (int j = 0; j < AttNames.Count; j++)
                     //{
+                    Dictionary<string, string> myAttsDict = new Dictionary<string, string>();
                     myAttsDict.Add("BIN", dt.Rows[i]["BIN"].ToString());
                     myAttsDict.Add("HEIGHT_ROO", dt.Rows[i]["HEIGHT_ROO"].ToString());
                     //}
@@ -695,16 +667,6 @@ namespace atit.Helpers
 
         public void SortbyBorough(string Borough)
         {
-            DataTable dt = null;
-            IFeatureSet FS = FeatureSet.Open(FilePath);
-            FS.FillAttributes();
-            dt = FS.DataTable;
-
-            // get the column Name 
-            foreach (DataColumn column in dt.Columns)
-            {
-                AttNames.Add(column.ColumnName);
-            }
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -713,7 +675,6 @@ namespace atit.Helpers
                     {
                         //local variables
                         List<List<Point>> PointsList = new List<List<Point>>();
-                        Dictionary<string, string> myAttsDict = new Dictionary<string, string>();
 
                         // populate vertices
                         IFeature feature = FS.GetFeature(i);
@@ -732,42 +693,40 @@ namespace atit.Helpers
                             }
                             PointsList.Add(myPoints);
                         }
+
+
+                    //for (int n = 0; n < Numofgeo; n++)
+                    //{
+                    //    //populate myPoints
+                    //    List<Point> myPoints = new List<Point>();
+                    //    IList<Coordinate> coords = feature.BasicGeometry.GetBasicGeometryN(n).Coordinates;
+                    //    foreach (var c in coords)
+                    //    {
+                    //        if (c.Z.ToString() != "NaN")
+                    //        {
+                    //            myPoints.Add(new Point(c.X, c.Y, c.Z));
+                    //        }
+                    //        else
+                    //        {
+                    //            myPoints.Add(new Point(c.X, c.Y, 0));
+                    //        }
+                    //    }
+
+                    //    PointsList.Add(myPoints);
+                    //}
+
+
+                    //populate attributes
+                    Dictionary<string, string> myAttsDict = getAttributesDictionary(i);
                         
+                    //myAttsDict.Add("BIN", dt.Rows[i]["BIN"].ToString());
+                    //myAttsDict.Add("BBL", dt.Rows[i]["BBL"].ToString());
+                    //myAttsDict.Add("HEIGHT_ROO", dt.Rows[i]["HEIGHT_ROO"].ToString());
+                    //myAttsDict.Add("FACILITY_T", dt.Rows[i]["FACILITY_T"].ToString());
+                    //myAttsDict.Add("GROUND_ELE", dt.Rows[i]["GROUND_ELE"].ToString());
 
-                        //for (int n = 0; n < Numofgeo; n++)
-                        //{
-                        //    //populate myPoints
-                        //    List<Point> myPoints = new List<Point>();
-                        //    IList<Coordinate> coords = feature.BasicGeometry.GetBasicGeometryN(n).Coordinates;
-                        //    foreach (var c in coords)
-                        //    {
-                        //        if (c.Z.ToString() != "NaN")
-                        //        {
-                        //            myPoints.Add(new Point(c.X, c.Y, c.Z));
-                        //        }
-                        //        else
-                        //        {
-                        //            myPoints.Add(new Point(c.X, c.Y, 0));
-                        //        }
-                        //    }
-
-                        //    PointsList.Add(myPoints);
-                        //}
-
-
-                        //populate attributes
-                        for (int j = 0; j < AttNames.Count; j++)
-                        {
-                            myAttsDict.Add(AttNames[j], dt.Rows[i][AttNames[j]].ToString());
-                        }
-                        //myAttsDict.Add("BIN", dt.Rows[i]["BIN"].ToString());
-                        //myAttsDict.Add("BBL", dt.Rows[i]["BBL"].ToString());
-                        //myAttsDict.Add("HEIGHT_ROO", dt.Rows[i]["HEIGHT_ROO"].ToString());
-                        //myAttsDict.Add("FACILITY_T", dt.Rows[i]["FACILITY_T"].ToString());
-                        //myAttsDict.Add("GROUND_ELE", dt.Rows[i]["GROUND_ELE"].ToString());
-
-                        // populate shapeitems
-                        Shapes.Add(new ShapeItem(type, PointsList, myAttsDict));
+                    // populate shapeitems
+                    Shapes.Add(new ShapeItem(type, PointsList, myAttsDict));
                     }
             }
 
@@ -858,12 +817,14 @@ namespace atit.Helpers
         public GIS(string filepath)
         {
             FilePath = filepath;
+            ReadData();
             GetShapes();
         }
 
         public GIS(string filepath, bool IsReproject)
         {
             FilePath = filepath;
+            ReadData();
             GetShapes(IsReproject);
         }
 
@@ -879,7 +840,29 @@ namespace atit.Helpers
         public GIS(string filePath, string Boroughenum)
         {
             FilePath = filePath;
+            ReadData();
             SortbyBorough(Boroughenum);
+        }
+
+        private Dictionary<string,string> getAttributesDictionary(int i)
+        {
+            Dictionary<string, string> myAttsDict = new Dictionary<string, string>();
+            for (int j = 0; j < AttNames.Count; j++)
+            {
+                DataColumn col = dt.Columns[j];
+
+                if (col.DataType.Name == "Single")
+                {
+                    Single val = (Single)dt.Rows[i][AttNames[j]];
+                    Double valdbl = (Double)val;
+                    myAttsDict.Add(AttNames[j], valdbl.ToString("0"));
+                } else
+                {
+                    myAttsDict.Add(AttNames[j], dt.Rows[i][AttNames[j]].ToString());
+                }               
+
+            }
+            return myAttsDict;
         }
     }
 }
