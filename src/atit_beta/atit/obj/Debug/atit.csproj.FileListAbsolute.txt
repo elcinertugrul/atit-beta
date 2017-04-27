@@ -159,7 +159,6 @@ C:\Users\EErtugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.
 C:\Users\EErtugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\RhinoCommon.dll
 C:\Users\EErtugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\Newtonsoft.Json.xml
 C:\Users\EErtugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\bin\RhinoCommon.xml
-C:\Users\EErtugrul\Documents\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csprojResolveAssemblyReference.cache
 C:\SL\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csprojResolveAssemblyReference.cache
 C:\SL\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.Properties.Resources.resources
 C:\SL\GitHub\atit-beta\src\atit_beta\atit\obj\Debug\atit.csproj.GenerateResource.Cache

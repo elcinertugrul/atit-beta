@@ -119,11 +119,13 @@ namespace atit
                 string minlat = (lat - y).ToString();
                 string maxlat = (lat + y).ToString();
 
+                //e26zsr6k is only for @it not DO NOT SHARE WITH public !
+
                 //string url = "http://data.osmbuildings.org/0.2/e26zsr6k/area.json??bbox=" + minlong + "," + minlat + "," + maxlog + "," + maxlat;
-                //string url = "http://api.openstreetmap.org/api/0.6/map?bbox=" + minlong + "," + minlat + "," + maxlog + "," + maxlat;
+                string url = "http://api.openstreetmap.org/api/0.6/map?bbox=" + minlong + "," + minlat + "," + maxlog + "," + maxlat;
                 // string url = "http://api.openstreetmap.org/api/0.6/map?bbox=-73.9930835,40.7338633,-73.9890835,40.7378633";
                 //"https://api.openstreetmap.org/api/0.6/map?bbox=-73.9915635,40.7380371,-73.9835635,40.7460371";
-                string url = "http://data.osmbuildings.org/0.2/e26zsr6k/feature/248143998.json";
+                //string url = "http://data.osmbuildings.org/0.2/e26zsr6k/feature/248143998.json";
                 string response = GetResponse(url);
 
                 doc.LoadXml(response);
@@ -269,9 +271,9 @@ namespace atit
 
             Brep b = null;
 
-            //string url = "http://overpass-api.de/api/interpreter?data=[out:json];(way("+ id +");node(w));out;";
+            string url = "http://overpass-api.de/api/interpreter?data=[out:json];(way("+ id +");node(w));out;";
             //string url = "http://data.osmbuildings.org/0.2/rkc8ywdl/feature/" + id + ".json";
-            string url = "http://data.osmbuildings.org/0.2/e26zsr6k/feature/" + id + ".json"; // my key e26zsr6k
+            //string url = "http://data.osmbuildings.org/0.2/e26zsr6k/feature/" + id + ".json"; // my key e26zsr6k
             // http://data.osmbuildings.org/0.2/e26zsr6k/feature/248143998.json
             string response2 = GetResponse(url);
 
